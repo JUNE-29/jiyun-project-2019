@@ -9,49 +9,57 @@ public class App3 {
       
       Scanner keyboard = new Scanner(System.in);
       
+      class Review {
+        int no;
+        String bookTitle;
+        String title;
+        String contents;
+        String photo ;
+        Date date ;
+        float score ;
+        int viewCount ;
+      }
+      
       final int SIZE = 100;
       
-      int[] no = new int[SIZE];
-      String[] bookTitle = new String[SIZE];
-      String[] title = new String[SIZE];
-      String[] contents = new String[SIZE];
-      String[] photo = new String[SIZE];
-      Date[] date = new Date[SIZE];
-      float[] score = new float[SIZE];
-      int[] viewCount = new int[SIZE];
-      String response;
+      Review[] books = new Review [SIZE];
       
       int count = 0;
+      
       for (int i = 0; i < SIZE; i++) {
+        count++;
+        
+        Review book = new Review();
+        
         System.out.print("번호? ");
-        no[i] = keyboard.nextInt();
+        book.no = keyboard.nextInt();
         keyboard.nextLine();
         
         System.out.print("도서명? ");
-        bookTitle[i] = keyboard.nextLine();
+        book.bookTitle = keyboard.nextLine();
         
         System.out.print("게시판 제목? ");
-        title[i] = keyboard.nextLine();
+        book.title = keyboard.nextLine();
         
-        System.out.print("내용? ");
-        contents[i] = keyboard.nextLine();
+        System.out.print("게시판 내용? ");
+        book.contents = keyboard.nextLine();
         
         System.out.print("이미지? ");
-        photo[i] = keyboard.nextLine();
+        book.photo = keyboard.nextLine();
         
         System.out.print("책에 대한 점수(5.0점만점)? ");
-        score[i] =keyboard.nextFloat();
+        book.score =keyboard.nextFloat();
         keyboard.nextLine();
         
-        date[i] = new Date(System.currentTimeMillis());
-        viewCount[i] = 0;
+        book.date = new Date(System.currentTimeMillis());
+        book.viewCount = 0;
         
-        count++;
+        books[i] = book;
         
         System.out.println();
         
         System.out.print("계속 입력하시겠습니까?(Y/n) ");
-        response = keyboard.nextLine();
+        String response = keyboard.nextLine();
         if(!response.equalsIgnoreCase("y")) {
           break;
         }
@@ -61,8 +69,10 @@ public class App3 {
       System.out.println();
       
       for(int i = 0; i < count; i++) {
-        System.out.printf("%d, %s, %s, %1.1f점 / 5점, %s, %d\n",
-            no[i], bookTitle[i], title[i], score[i], date[i], viewCount[i]);
+          Review book = books[i];
+        System.out.printf("%d, %s, 제목: %s, %1.1f점, %s, %d\n",
+            book.no, book.bookTitle, book.title, book.score, 
+            book.date, book.viewCount);
       }
       
      }
