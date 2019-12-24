@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.Scanner;
 import june.book.domain.Review;
 
-public class ReviewHandler {
+public class ReviewHandler2 {
 
   static final int REVIEW_SIZE = 100;
   static Review[] reviews = new Review [REVIEW_SIZE];

@@ -1,10 +1,11 @@
 package june.book;
 
-import java.sql.Date;
 import java.util.Scanner;
 import june.book.handler.ReadingHandler;
 import june.book.handler.RecommendHandler;
 import june.book.handler.ReviewHandler;
+import june.book.handler.ReviewHandler2;
+import june.book.handler.ReviewHandler3;
 
 public class App {
 
@@ -13,6 +14,8 @@ public class App {
   public static void main(String[] args) {
 
     ReviewHandler.keyboard = keyboard;
+    ReviewHandler2.keyboard = keyboard;
+    ReviewHandler3.keyboard = keyboard;
     RecommendHandler.keyboard = keyboard;
     ReadingHandler.keyboard = keyboard;
 
@@ -45,6 +48,34 @@ public class App {
 
         case "/review/list":
           ReviewHandler.listReview();
+          break;
+          
+        case "/review/detail":
+          ReviewHandler.detailReview();
+          break;
+          
+        case "/review2/add":
+          ReviewHandler2.addReview();
+          break;
+
+        case "/review2/list":
+          ReviewHandler2.listReview();
+          break;
+          
+        case "/review2/detail":
+          ReviewHandler2.detailReview();
+          break;
+          
+        case "/review3/add":
+          ReviewHandler3.addReview();
+          break;
+
+        case "/review3/list":
+          ReviewHandler3.listReview();
+          break;
+          
+        case "/review3/detail":
+          ReviewHandler3.detailReview();
           break;
 
         default:
