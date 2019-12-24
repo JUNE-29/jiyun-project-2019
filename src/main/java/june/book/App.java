@@ -2,6 +2,9 @@ package june.book;
 
 import java.sql.Date;
 import java.util.Scanner;
+import june.book.handler.ReadingHandler;
+import june.book.handler.RecommendHandler;
+import june.book.handler.ReviewHandler;
 
 public class App {
 

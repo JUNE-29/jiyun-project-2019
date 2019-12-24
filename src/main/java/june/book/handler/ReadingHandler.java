@@ -1,25 +1,16 @@
-package june.book;
+package june.book.handler;
 
-import java.sql.Date;
 import java.util.Scanner;
+import june.book.domain.Reading;
 
 public class ReadingHandler {
-
-  static class Reading {
-    int no;
-    String title;
-    String author;
-    String publisher;
-    String categories;
-    String publishedDate;
-  }
 
   static final int READING_SIZE = 100;
   static Reading[] reading = new Reading[READING_SIZE];
   static int readingCount = 0;
-  static Scanner keyboard;
+  public static Scanner keyboard;
 
-  static void addReading() {
+  public static void addReading() {
     Reading read = new Reading(); 
 
     System.out.print("번호? ");
@@ -46,7 +37,7 @@ public class ReadingHandler {
     System.out.println("저장하였습니다.");
   }
 
-  static void listReading() {
+  public static void listReading() {
     for(int i = 0; i < readingCount; i++) {
       Reading r = reading[i];
       System.out.printf("%d, %s, %s, %s, %s, %s\n",

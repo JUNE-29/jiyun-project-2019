@@ -1,25 +1,17 @@
-package june.book;
+package june.book.handler;
 
 import java.sql.Date;
 import java.util.Scanner;
+import june.book.domain.Recommend;
 
 public class RecommendHandler {
-  static class Recommend{
-    int no;
-    String categories;
-    String language;
-    String age;
-    String character;
-    String keyword;
-    Date date;
-  }
 
   static final int RECOMMEND_SIZE = 100;
   static Recommend[] recommends = new Recommend[RECOMMEND_SIZE];
   static int recommendCount = 0;
-  static Scanner keyboard;
+  public static Scanner keyboard;
 
-  static void addRecommend() {
+  public static void addRecommend() {
     Recommend recommend = new Recommend();
 
     System.out.print("번호? ");
@@ -48,7 +40,7 @@ public class RecommendHandler {
     System.out.println("저장하였습니다.");
   }
 
-  static void listRecommend() {
+  public static void listRecommend() {
     for(int i = 0; i < recommendCount; i++) {
       Recommend rec = recommends[i];
       System.out.printf("%d, %s세, %s, %s, #%s, %s\n",
