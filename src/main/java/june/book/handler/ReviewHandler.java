@@ -6,34 +6,40 @@ import june.book.domain.Review;
 
 public class ReviewHandler {
 
-  Review[] reviews = new Review [REVIEW_SIZE];
+  Review[] reviews; 
   int reviewCount = 0;
 
-  public static Scanner keyboard;
+  public Scanner input;
+  
   public static final int REVIEW_SIZE = 100;
+  
+  public ReviewHandler(Scanner input) {
+    this.input = input;
+    this.reviews = new Review [REVIEW_SIZE];
+  }
 
   public void addReview() {
     Review review = new Review();
 
     System.out.print("번호? ");
-    review.no = keyboard.nextInt();
-    keyboard.nextLine();
+    review.no = input.nextInt();
+    input.nextLine();
 
     System.out.print("도서명? ");
-    review.bookTitle = keyboard.nextLine();
+    review.bookTitle = input.nextLine();
 
     System.out.print("제목? ");
-    review.title = keyboard.nextLine();
+    review.title = input.nextLine();
 
     System.out.print("내용? ");
-    review.contents = keyboard.nextLine();
+    review.contents = input.nextLine();
 
     System.out.print("이미지? ");
-    review.photo = keyboard.nextLine();
+    review.photo = input.nextLine();
 
     System.out.print("책에 대한 점수(5.0점만점)? ");
-    review.score =keyboard.nextFloat();
-    keyboard.nextLine();
+    review.score =input.nextFloat();
+    input.nextLine();
 
     review.date = new Date(System.currentTimeMillis());
     review.viewCount = 0;
@@ -52,8 +58,8 @@ public class ReviewHandler {
 
   public void detailReview() {
     System.out.print("게시물 번호? ");
-    int no = keyboard.nextInt();
-    keyboard.nextLine();
+    int no = input.nextInt();
+    input.nextLine();
 
     Review review =  null;
     for(int i = 0; i < this.reviewCount; i++) {

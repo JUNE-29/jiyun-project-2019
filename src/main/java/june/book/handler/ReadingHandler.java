@@ -5,34 +5,41 @@ import june.book.domain.Reading;
 
 public class ReadingHandler {
 
-  Reading[] reading = new Reading[READING_SIZE];
+  Reading[] reading;
   int readingCount = 0;
 
-  public static Scanner keyboard;
+  Scanner input;
+  
   public static final int READING_SIZE = 100;
+
+  public ReadingHandler(Scanner input) {
+    this.input = input;
+    this.reading = new Reading[READING_SIZE];
+  }
+
 
   public void addReading() {
     Reading read = new Reading(); 
 
     System.out.print("번호? ");
-    read.no = keyboard.nextInt();
+    read.no = input.nextInt();
 
-    keyboard.nextLine();
+    input.nextLine();
 
     System.out.print("도서명? ");
-    read.title = keyboard.nextLine();
+    read.title = input.nextLine();
 
     System.out.print("지은이? ");
-    read.author = keyboard.nextLine();
+    read.author = input.nextLine();
 
     System.out.print("출판사? ");
-    read.publisher = keyboard.nextLine();
+    read.publisher = input.nextLine();
 
     System.out.print("카테고리? ");
-    read.categories = keyboard.nextLine();
+    read.categories = input.nextLine();
 
     System.out.print("출판 년도? ");
-    read.publishedDate = keyboard.nextLine();
+    read.publishedDate = input.nextLine();
 
     this.reading[this.readingCount++] = read;
     System.out.println("저장하였습니다.");

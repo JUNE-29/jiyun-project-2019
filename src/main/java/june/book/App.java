@@ -11,18 +11,14 @@ public class App {
 
   public static void main(String[] args) {
 
-    ReviewHandler.keyboard = keyboard;
-    RecommendHandler.keyboard = keyboard;
-    ReadingHandler.keyboard = keyboard;
 
-    ReviewHandler reviewHandler1 = new ReviewHandler();
-    ReviewHandler reviewHandler2 = new ReviewHandler();
-    ReviewHandler reviewHandler3 = new ReviewHandler();
+    ReviewHandler reviewHandler1 = new ReviewHandler(keyboard);
+    ReviewHandler reviewHandler2 = new ReviewHandler(keyboard);
+    ReviewHandler reviewHandler3 = new ReviewHandler(keyboard);
     
-    RecommendHandler recommendHandler1 = new RecommendHandler();
+    RecommendHandler recommendHandler1 = new RecommendHandler(keyboard);
     
-    ReadingHandler readingHandler1 = new ReadingHandler();
-    
+    ReadingHandler readingHandler1 = new ReadingHandler(keyboard);
     
     
     String command;
