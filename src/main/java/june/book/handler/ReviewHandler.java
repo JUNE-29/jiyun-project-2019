@@ -6,12 +6,13 @@ import june.book.domain.Review;
 
 public class ReviewHandler {
 
-  static final int REVIEW_SIZE = 100;
-  static Review[] reviews = new Review [REVIEW_SIZE];
-  static int reviewCount = 0;
-  public static Scanner keyboard;
+  Review[] reviews = new Review [REVIEW_SIZE];
+  int reviewCount = 0;
 
-  public static void addReview() {
+  public static Scanner keyboard;
+  public static final int REVIEW_SIZE = 100;
+
+  public void addReview() {
     Review review = new Review();
 
     System.out.print("번호? ");
@@ -37,27 +38,27 @@ public class ReviewHandler {
     review.date = new Date(System.currentTimeMillis());
     review.viewCount = 0;
 
-    reviews[reviewCount++] = review;
+    this.reviews[this.reviewCount++] = review;
     System.out.println("저장하였습니다.");
   }
-  public static void listReview() {
-    for(int i = 0; i < reviewCount; i++) {
-      Review rev = reviews[i];
+  public void listReview() {
+    for(int i = 0; i < this.reviewCount; i++) {
+      Review rev = this.reviews[i];
       System.out.printf("%d, %s, 제목: %s, %1.1f점, %s, %d\n",
           rev.no, rev.bookTitle, rev.title, rev.score, 
           rev.date, rev.viewCount);
     }
   }
-  
-  public static void detailReview() {
+
+  public void detailReview() {
     System.out.print("게시물 번호? ");
     int no = keyboard.nextInt();
     keyboard.nextLine();
-    
+
     Review review =  null;
-    for(int i = 0; i < reviewCount; i++) {
-      if(reviews[i].no == no) {
-        review = reviews[i];
+    for(int i = 0; i < this.reviewCount; i++) {
+      if(this.reviews[i].no == no) {
+        review = this.reviews[i];
         break;
       }
     }

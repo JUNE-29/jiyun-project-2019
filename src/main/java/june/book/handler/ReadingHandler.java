@@ -5,12 +5,13 @@ import june.book.domain.Reading;
 
 public class ReadingHandler {
 
-  static final int READING_SIZE = 100;
-  static Reading[] reading = new Reading[READING_SIZE];
-  static int readingCount = 0;
-  public static Scanner keyboard;
+  Reading[] reading = new Reading[READING_SIZE];
+  int readingCount = 0;
 
-  public static void addReading() {
+  public static Scanner keyboard;
+  public static final int READING_SIZE = 100;
+
+  public void addReading() {
     Reading read = new Reading(); 
 
     System.out.print("번호? ");
@@ -33,13 +34,13 @@ public class ReadingHandler {
     System.out.print("출판 년도? ");
     read.publishedDate = keyboard.nextLine();
 
-    reading[readingCount++] = read;
+    this.reading[this.readingCount++] = read;
     System.out.println("저장하였습니다.");
   }
 
-  public static void listReading() {
-    for(int i = 0; i < readingCount; i++) {
-      Reading r = reading[i];
+  public void listReading() {
+    for(int i = 0; i < this.readingCount; i++) {
+      Reading r = this.reading[i];
       System.out.printf("%d, %s, %s, %s, %s, %s\n",
           r.no, r.title, r.author, r.publisher, r.categories, r.publishedDate);
     }

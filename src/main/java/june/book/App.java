@@ -4,8 +4,6 @@ import java.util.Scanner;
 import june.book.handler.ReadingHandler;
 import june.book.handler.RecommendHandler;
 import june.book.handler.ReviewHandler;
-import june.book.handler.ReviewHandler2;
-import june.book.handler.ReviewHandler3;
 
 public class App {
 
@@ -14,11 +12,19 @@ public class App {
   public static void main(String[] args) {
 
     ReviewHandler.keyboard = keyboard;
-    ReviewHandler2.keyboard = keyboard;
-    ReviewHandler3.keyboard = keyboard;
     RecommendHandler.keyboard = keyboard;
     ReadingHandler.keyboard = keyboard;
 
+    ReviewHandler reviewHandler1 = new ReviewHandler();
+    ReviewHandler reviewHandler2 = new ReviewHandler();
+    ReviewHandler reviewHandler3 = new ReviewHandler();
+    
+    RecommendHandler recommendHandler1 = new RecommendHandler();
+    
+    ReadingHandler readingHandler1 = new ReadingHandler();
+    
+    
+    
     String command;
 
     do{
@@ -27,55 +33,55 @@ public class App {
 
       switch (command) {
         case "/reading/add" :
-          ReadingHandler.addReading();
+          readingHandler1.addReading();
           break;
 
         case "/reading/list":
-          ReadingHandler.listReading();
+          readingHandler1.listReading();
           break;
 
         case "/recommend/add":
-          RecommendHandler.addRecommend();
+          recommendHandler1.addRecommend();
           break;
 
         case "/recommend/list":
-          RecommendHandler.listRecommend();
+          recommendHandler1.listRecommend();
           break;
 
         case "/review/add":
-          ReviewHandler.addReview();
+          reviewHandler1.addReview();
           break;
 
         case "/review/list":
-          ReviewHandler.listReview();
+          reviewHandler1.listReview();
           break;
           
         case "/review/detail":
-          ReviewHandler.detailReview();
+          reviewHandler1.detailReview();
           break;
           
         case "/review2/add":
-          ReviewHandler2.addReview();
+          reviewHandler2.addReview();
           break;
 
         case "/review2/list":
-          ReviewHandler2.listReview();
+          reviewHandler2.listReview();
           break;
           
         case "/review2/detail":
-          ReviewHandler2.detailReview();
+          reviewHandler2.detailReview();
           break;
           
         case "/review3/add":
-          ReviewHandler3.addReview();
+          reviewHandler3.addReview();
           break;
 
         case "/review3/list":
-          ReviewHandler3.listReview();
+          reviewHandler3.listReview();
           break;
           
         case "/review3/detail":
-          ReviewHandler3.detailReview();
+          reviewHandler3.detailReview();
           break;
 
         default:

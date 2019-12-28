@@ -6,12 +6,13 @@ import june.book.domain.Recommend;
 
 public class RecommendHandler {
 
-  static final int RECOMMEND_SIZE = 100;
-  static Recommend[] recommends = new Recommend[RECOMMEND_SIZE];
-  static int recommendCount = 0;
+  Recommend[] recommends = new Recommend[RECOMMEND_SIZE];
+  int recommendCount = 0;
+  
   public static Scanner keyboard;
+  public static final int RECOMMEND_SIZE = 100;
 
-  public static void addRecommend() {
+  public void addRecommend() {
     Recommend recommend = new Recommend();
 
     System.out.print("번호? ");
@@ -36,13 +37,13 @@ public class RecommendHandler {
 
     recommend.date = new Date(System.currentTimeMillis());
 
-    recommends[recommendCount++] = recommend;
+    this.recommends[this.recommendCount++] = recommend;
     System.out.println("저장하였습니다.");
   }
 
-  public static void listRecommend() {
-    for(int i = 0; i < recommendCount; i++) {
-      Recommend rec = recommends[i];
+  public void listRecommend() {
+    for(int i = 0; i < this.recommendCount; i++) {
+      Recommend rec = this.recommends[i];
       System.out.printf("%d, %s세, %s, %s, #%s, %s\n",
           rec.no, rec.age, rec.categories, rec.character, rec.keyword, rec.date);
     }
