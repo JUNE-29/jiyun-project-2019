@@ -22,24 +22,24 @@ public class ReadingHandler {
     Reading read = new Reading(); 
 
     System.out.print("번호? ");
-    read.no = input.nextInt();
+    read.setNo(input.nextInt());
 
     input.nextLine();
 
     System.out.print("도서명? ");
-    read.title = input.nextLine();
+    read.setTitle(input.nextLine());
 
     System.out.print("지은이? ");
-    read.author = input.nextLine();
+    read.setAuthor(input.nextLine());
 
     System.out.print("출판사? ");
-    read.publisher = input.nextLine();
+    read.setPublisher(input.nextLine());
 
     System.out.print("카테고리? ");
-    read.categories = input.nextLine();
+    read.setCategories(input.nextLine());
 
     System.out.print("출판 년도? ");
-    read.publishedDate = input.nextLine();
+    read.setPublishedDate(input.nextLine());
 
     this.reading[this.readingCount++] = read;
     System.out.println("저장하였습니다.");
@@ -49,7 +49,8 @@ public class ReadingHandler {
     for(int i = 0; i < this.readingCount; i++) {
       Reading r = this.reading[i];
       System.out.printf("%d, %s, %s, %s, %s, %s\n",
-          r.no, r.title, r.author, r.publisher, r.categories, r.publishedDate);
+          r.getNo(), r.getTitle(), r.getAuthor(),
+          r.getPublisher(), r.getCategories(), r.getPublishedDate());
     }
   }
 }

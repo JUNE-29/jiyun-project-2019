@@ -22,26 +22,26 @@ public class RecommendHandler {
     Recommend recommend = new Recommend();
 
     System.out.print("번호? ");
-    recommend.no = input.nextInt();
+    recommend.setNo(input.nextInt());
 
     input.nextLine();
 
     System.out.print("카테고리? ");
-    recommend.categories = input.nextLine();
+    recommend.setCategories(input.nextLine());
 
     System.out.print("언어? ");
-    recommend.language = input.nextLine();
+    recommend.setLanguage(input.nextLine());
 
     System.out.print("나이? ");
-    recommend.age = input.nextLine();
+    recommend.setAge(input.nextLine());
 
     System.out.print("MBTI(성격)? ");
-    recommend.character = input.nextLine();
+    recommend.setCharacter(input.nextLine());
 
     System.out.print("키워드(해시태그)? ");
-    recommend.keyword = input.nextLine();
+    recommend.setKeyword(input.nextLine());
 
-    recommend.date = new Date(System.currentTimeMillis());
+    recommend.setDate(new Date(System.currentTimeMillis()));
 
     this.recommends[this.recommendCount++] = recommend;
     System.out.println("저장하였습니다.");
@@ -51,7 +51,8 @@ public class RecommendHandler {
     for(int i = 0; i < this.recommendCount; i++) {
       Recommend rec = this.recommends[i];
       System.out.printf("%d, %s세, %s, %s, #%s, %s\n",
-          rec.no, rec.age, rec.categories, rec.character, rec.keyword, rec.date);
+          rec.getNo(), rec.getAge(), rec.getCategories(),
+          rec.getCharacter(), rec.getKeyword(), rec.getDate());
     }
   }
 }

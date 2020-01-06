@@ -22,27 +22,27 @@ public class ReviewHandler {
     Review review = new Review();
 
     System.out.print("번호? ");
-    review.no = input.nextInt();
+    review.setNo(input.nextInt());
     input.nextLine();
 
     System.out.print("도서명? ");
-    review.bookTitle = input.nextLine();
+    review.setBookTitle(input.nextLine());
 
     System.out.print("제목? ");
-    review.title = input.nextLine();
+    review.setTitle(input.nextLine());
 
     System.out.print("내용? ");
-    review.contents = input.nextLine();
+    review.setContents(input.nextLine());
 
     System.out.print("이미지? ");
-    review.photo = input.nextLine();
+    review.setPhoto(input.nextLine());
 
     System.out.print("책에 대한 점수(5.0점만점)? ");
-    review.score =input.nextFloat();
+    review.setScore(input.nextFloat());
     input.nextLine();
 
-    review.date = new Date(System.currentTimeMillis());
-    review.viewCount = 0;
+    review.setDate(new Date(System.currentTimeMillis()));
+    review.setViewCount(0);
 
     this.reviews[this.reviewCount++] = review;
     System.out.println("저장하였습니다.");
@@ -51,8 +51,8 @@ public class ReviewHandler {
     for(int i = 0; i < this.reviewCount; i++) {
       Review rev = this.reviews[i];
       System.out.printf("%d, %s, 제목: %s, %1.1f점, %s, %d\n",
-          rev.no, rev.bookTitle, rev.title, rev.score, 
-          rev.date, rev.viewCount);
+          rev.getNo(), rev.getBookTitle(), rev.getTitle(), rev.getScore(), 
+          rev.getDate(), rev.getViewCount());
     }
   }
 
@@ -63,7 +63,7 @@ public class ReviewHandler {
 
     Review review =  null;
     for(int i = 0; i < this.reviewCount; i++) {
-      if(this.reviews[i].no == no) {
+      if(this.reviews[i].getNo() == no) {
         review = this.reviews[i];
         break;
       }
@@ -72,11 +72,11 @@ public class ReviewHandler {
       System.out.println("게시물 번호가 유효하지 않습니다.");
       return;
     }
-    System.out.printf("번호: %d\n", review.no);
-    System.out.printf("도서명: %s\n", review.bookTitle);
-    System.out.printf("제목: %s\n", review.title);
-    System.out.printf("평가: %1.1f점\n", review.score);
-    System.out.printf("등록일: %s\n", review.date);
-    System.out.printf("조회수: %s\n", review.viewCount);
+    System.out.printf("번호: %d\n", review.getNo());
+    System.out.printf("도서명: %s\n", review.getBookTitle());
+    System.out.printf("제목: %s\n", review.getTitle());
+    System.out.printf("평가: %1.1f점\n", review.getScore());
+    System.out.printf("등록일: %s\n", review.getDate());
+    System.out.printf("조회수: %s\n", review.getViewCount());
   }
 }
