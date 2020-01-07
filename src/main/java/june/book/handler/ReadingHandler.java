@@ -5,18 +5,28 @@ import june.book.domain.Reading;
 
 public class ReadingHandler {
 
-  Reading[] reading;
-  int readingCount = 0;
-
-  Scanner input;
+  ReadingList readingList;
   
-  public static final int READING_SIZE = 100;
-
+  public Scanner input;
+  
   public ReadingHandler(Scanner input) {
     this.input = input;
-    this.reading = new Reading[READING_SIZE];
+    readingList = new ReadingList();
+  }
+  
+  public ReadingHandler(Scanner input, int capacity) {
+    this.input = input;
+    readingList = new ReadingList(capacity);
   }
 
+  public void listReading() {
+    Reading[] reading = readingList.toArray();
+    for(Reading r : reading) {
+      System.out.printf("%d, %s, %s, %s, %s, %s\n",
+          r.getNo(), r.getTitle(), r.getAuthor(),
+          r.getPublisher(), r.getCategories(), r.getPublishedDate());
+    }
+  }
 
   public void addReading() {
     Reading read = new Reading(); 
@@ -41,16 +51,8 @@ public class ReadingHandler {
     System.out.print("출판 년도? ");
     read.setPublishedDate(input.nextLine());
 
-    this.reading[this.readingCount++] = read;
+    readingList.add(read);
     System.out.println("저장하였습니다.");
   }
 
-  public void listReading() {
-    for(int i = 0; i < this.readingCount; i++) {
-      Reading r = this.reading[i];
-      System.out.printf("%d, %s, %s, %s, %s, %s\n",
-          r.getNo(), r.getTitle(), r.getAuthor(),
-          r.getPublisher(), r.getCategories(), r.getPublishedDate());
-    }
-  }
 }

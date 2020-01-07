@@ -6,16 +6,18 @@ import june.book.domain.Review;
 
 public class ReviewHandler {
 
-  Review[] reviews; 
-  int reviewCount = 0;
+  ReviewList reviewList;
+  
+  Scanner input;
 
-  public Scanner input;
-  
-  public static final int REVIEW_SIZE = 100;
-  
   public ReviewHandler(Scanner input) {
     this.input = input;
-    this.reviews = new Review [REVIEW_SIZE];
+    this.reviewList = new ReviewList();
+  }
+  
+  public ReviewHandler(Scanner input, int capacity) {
+    this.input = input;
+    this.reviewList = new ReviewList(capacity);
   }
 
   public void addReview() {
@@ -44,12 +46,12 @@ public class ReviewHandler {
     review.setDate(new Date(System.currentTimeMillis()));
     review.setViewCount(0);
 
-    this.reviews[this.reviewCount++] = review;
+    reviewList.add(review);
     System.out.println("저장하였습니다.");
   }
   public void listReview() {
-    for(int i = 0; i < this.reviewCount; i++) {
-      Review rev = this.reviews[i];
+    Review[] review = reviewList.toArray();
+    for(Review rev : review) {
       System.out.printf("%d, %s, 제목: %s, %1.1f점, %s, %d\n",
           rev.getNo(), rev.getBookTitle(), rev.getTitle(), rev.getScore(), 
           rev.getDate(), rev.getViewCount());
@@ -61,17 +63,13 @@ public class ReviewHandler {
     int no = input.nextInt();
     input.nextLine();
 
-    Review review =  null;
-    for(int i = 0; i < this.reviewCount; i++) {
-      if(this.reviews[i].getNo() == no) {
-        review = this.reviews[i];
-        break;
-      }
-    }
+    Review review = reviewList.get(no);
+
     if (review == null) {
       System.out.println("게시물 번호가 유효하지 않습니다.");
       return;
     }
+    
     System.out.printf("번호: %d\n", review.getNo());
     System.out.printf("도서명: %s\n", review.getBookTitle());
     System.out.printf("제목: %s\n", review.getTitle());

@@ -6,17 +6,29 @@ import june.book.domain.Recommend;
 
 public class RecommendHandler {
 
-  Recommend[] recommends;
-  int recommendCount = 0;
-  
-  public Scanner input;
-  
-  public static final int RECOMMEND_SIZE = 100;
-  
+  RecommendList recommendList;
+
+  Scanner input;
+
   public RecommendHandler(Scanner input) {
     this.input = input;
-    this.recommends = new Recommend[RECOMMEND_SIZE];
+    this.recommendList = new RecommendList();
   }
+
+  public RecommendHandler(Scanner input, int capacity) {
+    this.input = input;
+    recommendList = new RecommendList(capacity);
+  }
+
+  public void listRecommend() {
+    Recommend[] recommend = recommendList.toArray(); 
+    for(Recommend rec : recommend) {
+      System.out.printf("%d, %s세, %s, %s, #%s, %s\n",
+          rec.getNo(), rec.getAge(), rec.getCategories(),
+          rec.getCharacter(), rec.getKeyword(), rec.getDate());
+    }
+  }
+
 
   public void addRecommend() {
     Recommend recommend = new Recommend();
@@ -43,16 +55,8 @@ public class RecommendHandler {
 
     recommend.setDate(new Date(System.currentTimeMillis()));
 
-    this.recommends[this.recommendCount++] = recommend;
+    recommendList.add(recommend);
     System.out.println("저장하였습니다.");
   }
 
-  public void listRecommend() {
-    for(int i = 0; i < this.recommendCount; i++) {
-      Recommend rec = this.recommends[i];
-      System.out.printf("%d, %s세, %s, %s, #%s, %s\n",
-          rec.getNo(), rec.getAge(), rec.getCategories(),
-          rec.getCharacter(), rec.getKeyword(), rec.getDate());
-    }
-  }
 }
