@@ -6,18 +6,27 @@ import june.book.domain.Review;
 
 public class ReviewHandler {
 
-  ReviewList reviewList;
-  
+  ArrayList reviewList;
+
   Scanner input;
 
   public ReviewHandler(Scanner input) {
     this.input = input;
-    this.reviewList = new ReviewList();
+    this.reviewList = new ArrayList();
   }
-  
+
   public ReviewHandler(Scanner input, int capacity) {
     this.input = input;
-    this.reviewList = new ReviewList(capacity);
+    this.reviewList = new ArrayList(capacity);
+  }
+
+  public void listReview() {
+    Object[] arr = reviewList.toArray();
+    for (Object obj : arr) {
+      Review rev = (Review) obj;
+      System.out.printf("%d, %s, 제목: %s, %1.1f점, %s, %d\n", rev.getNo(), rev.getBookTitle(),
+          rev.getTitle(), rev.getScore(), rev.getDate(), rev.getViewCount());
+    }
   }
 
   public void addReview() {
@@ -49,27 +58,19 @@ public class ReviewHandler {
     reviewList.add(review);
     System.out.println("저장하였습니다.");
   }
-  public void listReview() {
-    Review[] review = reviewList.toArray();
-    for(Review rev : review) {
-      System.out.printf("%d, %s, 제목: %s, %1.1f점, %s, %d\n",
-          rev.getNo(), rev.getBookTitle(), rev.getTitle(), rev.getScore(), 
-          rev.getDate(), rev.getViewCount());
-    }
-  }
 
   public void detailReview() {
-    System.out.print("게시물 번호? ");
-    int no = input.nextInt();
+    System.out.print("게시물 인덱스? ");
+    int index = input.nextInt();
     input.nextLine();
 
-    Review review = reviewList.get(no);
+    Review review = (Review) this.reviewList.get(index);
 
     if (review == null) {
       System.out.println("게시물 번호가 유효하지 않습니다.");
       return;
     }
-    
+
     System.out.printf("번호: %d\n", review.getNo());
     System.out.printf("도서명: %s\n", review.getBookTitle());
     System.out.printf("제목: %s\n", review.getTitle());

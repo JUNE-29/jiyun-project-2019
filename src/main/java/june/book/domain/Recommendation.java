@@ -2,11 +2,10 @@ package june.book.domain;
 
 import java.sql.Date;
 
-public class Recommend {
+public class Recommendation {
 
   private int no;
   private String categories;
-  private String language;
   private String age;
   private String character;
   private String keyword;
@@ -28,13 +27,6 @@ public class Recommend {
     this.categories = categories;
   }
 
-  public String getLanguage() {
-    return language;
-  }
-
-  public void setLanguage(String language) {
-    this.language = language;
-  }
 
   public String getAge() {
     return age;

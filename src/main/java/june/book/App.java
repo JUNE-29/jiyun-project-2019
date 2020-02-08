@@ -2,7 +2,7 @@ package june.book;
 
 import java.util.Scanner;
 import june.book.handler.ReadingHandler;
-import june.book.handler.RecommendHandler;
+import june.book.handler.RecommendationHandler;
 import june.book.handler.ReviewHandler;
 
 public class App {
@@ -13,22 +13,22 @@ public class App {
 
 
     ReviewHandler reviewHandler1 = new ReviewHandler(keyboard);
-    ReviewHandler reviewHandler2 = new ReviewHandler(keyboard);
+    ReviewHandler reviewHandler2 = new ReviewHandler(keyboard, 1000);
     ReviewHandler reviewHandler3 = new ReviewHandler(keyboard);
-    
-    RecommendHandler recommendHandler1 = new RecommendHandler(keyboard);
-    
+
+    RecommendationHandler recommendHandler1 = new RecommendationHandler(keyboard);
+
     ReadingHandler readingHandler1 = new ReadingHandler(keyboard);
-    
-    
+
+
     String command;
 
-    do{
+    do {
       System.out.print("\n명령> ");
       command = keyboard.nextLine();
 
       switch (command) {
-        case "/reading/add" :
+        case "/reading/add":
           readingHandler1.addReading();
           break;
 
@@ -36,12 +36,20 @@ public class App {
           readingHandler1.listReading();
           break;
 
+        case "/reading/detail":
+          readingHandler1.detailReading();
+          break;
+
         case "/recommend/add":
-          recommendHandler1.addRecommend();
+          recommendHandler1.addRecommendation();
           break;
 
         case "/recommend/list":
-          recommendHandler1.listRecommend();
+          recommendHandler1.listRecommendation();
+          break;
+
+        case "/recommend/detail":
+          recommendHandler1.detailRecommendation();
           break;
 
         case "/review/add":
@@ -51,11 +59,11 @@ public class App {
         case "/review/list":
           reviewHandler1.listReview();
           break;
-          
+
         case "/review/detail":
           reviewHandler1.detailReview();
           break;
-          
+
         case "/review2/add":
           reviewHandler2.addReview();
           break;
@@ -63,11 +71,11 @@ public class App {
         case "/review2/list":
           reviewHandler2.listReview();
           break;
-          
+
         case "/review2/detail":
           reviewHandler2.detailReview();
           break;
-          
+
         case "/review3/add":
           reviewHandler3.addReview();
           break;
@@ -75,17 +83,17 @@ public class App {
         case "/review3/list":
           reviewHandler3.listReview();
           break;
-          
+
         case "/review3/detail":
           reviewHandler3.detailReview();
           break;
 
         default:
-          if(!command.equalsIgnoreCase("quit")) {
+          if (!command.equalsIgnoreCase("quit")) {
             System.out.println("실행할 수 없는 명령입니다.");
           }
       }
-    } while(!command.equalsIgnoreCase("quit"));
+    } while (!command.equalsIgnoreCase("quit"));
 
     System.out.println("종료됩니다. 안녕히가십시오.");
 
