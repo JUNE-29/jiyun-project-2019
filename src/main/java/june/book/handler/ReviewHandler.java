@@ -3,27 +3,28 @@ package june.book.handler;
 import java.sql.Date;
 import java.util.Scanner;
 import june.book.domain.Review;
+import june.util.ArrayList;
 
 public class ReviewHandler {
 
-  ArrayList reviewList;
+  ArrayList<Review> reviewList;
 
   Scanner input;
 
   public ReviewHandler(Scanner input) {
     this.input = input;
-    this.reviewList = new ArrayList();
+    this.reviewList = new ArrayList<>();
   }
 
   public ReviewHandler(Scanner input, int capacity) {
     this.input = input;
-    this.reviewList = new ArrayList(capacity);
+    this.reviewList = new ArrayList<>(capacity);
   }
 
   public void listReview() {
-    Object[] arr = reviewList.toArray();
-    for (Object obj : arr) {
-      Review rev = (Review) obj;
+    Review[] arr = this.reviewList.toArray(new Review[reviewList.size()]);
+
+    for (Review rev : arr) {
       System.out.printf("%d, %s, 제목: %s, %1.1f점, %s, %d\n", rev.getNo(), rev.getBookTitle(),
           rev.getTitle(), rev.getScore(), rev.getDate(), rev.getViewCount());
     }
@@ -64,7 +65,7 @@ public class ReviewHandler {
     int index = input.nextInt();
     input.nextLine();
 
-    Review review = (Review) this.reviewList.get(index);
+    Review review = this.reviewList.get(index);
 
     if (review == null) {
       System.out.println("게시물 번호가 유효하지 않습니다.");

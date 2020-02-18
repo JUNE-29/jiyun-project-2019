@@ -12,13 +12,9 @@ public class App {
   public static void main(String[] args) {
 
 
-    ReviewHandler reviewHandler1 = new ReviewHandler(keyboard);
-    ReviewHandler reviewHandler2 = new ReviewHandler(keyboard, 1000);
-    ReviewHandler reviewHandler3 = new ReviewHandler(keyboard);
-
-    RecommendationHandler recommendHandler1 = new RecommendationHandler(keyboard);
-
-    ReadingHandler readingHandler1 = new ReadingHandler(keyboard);
+    ReadingHandler readingHandler = new ReadingHandler(keyboard);
+    RecommendationHandler recommendHandler = new RecommendationHandler(keyboard);
+    ReviewHandler reviewHandler = new ReviewHandler(keyboard);
 
 
     String command;
@@ -29,63 +25,39 @@ public class App {
 
       switch (command) {
         case "/reading/add":
-          readingHandler1.addReading();
+          readingHandler.addReading();
           break;
 
         case "/reading/list":
-          readingHandler1.listReading();
+          readingHandler.listReading();
           break;
 
         case "/reading/detail":
-          readingHandler1.detailReading();
+          readingHandler.detailReading();
           break;
 
         case "/recommend/add":
-          recommendHandler1.addRecommendation();
+          recommendHandler.addRecommendation();
           break;
 
         case "/recommend/list":
-          recommendHandler1.listRecommendation();
+          recommendHandler.listRecommendation();
           break;
 
         case "/recommend/detail":
-          recommendHandler1.detailRecommendation();
+          recommendHandler.detailRecommendation();
           break;
 
         case "/review/add":
-          reviewHandler1.addReview();
+          reviewHandler.addReview();
           break;
 
         case "/review/list":
-          reviewHandler1.listReview();
+          reviewHandler.listReview();
           break;
 
         case "/review/detail":
-          reviewHandler1.detailReview();
-          break;
-
-        case "/review2/add":
-          reviewHandler2.addReview();
-          break;
-
-        case "/review2/list":
-          reviewHandler2.listReview();
-          break;
-
-        case "/review2/detail":
-          reviewHandler2.detailReview();
-          break;
-
-        case "/review3/add":
-          reviewHandler3.addReview();
-          break;
-
-        case "/review3/list":
-          reviewHandler3.listReview();
-          break;
-
-        case "/review3/detail":
-          reviewHandler3.detailReview();
+          reviewHandler.detailReview();
           break;
 
         default:

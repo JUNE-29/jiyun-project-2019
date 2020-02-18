@@ -3,27 +3,29 @@ package june.book.handler;
 import java.sql.Date;
 import java.util.Scanner;
 import june.book.domain.Recommendation;
+import june.util.ArrayList;
 
 public class RecommendationHandler {
 
-  ArrayList recommendationList;
+  ArrayList<Recommendation> recommendationList;
 
   Scanner input;
 
   public RecommendationHandler(Scanner input) {
     this.input = input;
-    this.recommendationList = new ArrayList();
+    this.recommendationList = new ArrayList<>();
   }
 
   public RecommendationHandler(Scanner input, int capacity) {
     this.input = input;
-    recommendationList = new ArrayList(capacity);
+    recommendationList = new ArrayList<>(capacity);
   }
 
   public void listRecommendation() {
-    Object[] arr = recommendationList.toArray();
-    for (Object obj : arr) {
-      Recommendation rec = (Recommendation) obj;
+    Recommendation[] arr =
+        this.recommendationList.toArray(new Recommendation[this.recommendationList.size()]);
+
+    for (Recommendation rec : arr) {
       System.out.printf("%d, %s세, %s, %s, #%s, %s\n", rec.getNo(), rec.getAge(),
           rec.getCategories(), rec.getCharacter(), rec.getKeyword(), rec.getDate());
     }
@@ -61,7 +63,7 @@ public class RecommendationHandler {
     int index = input.nextInt();
     input.nextLine();
 
-    Recommendation recommend = (Recommendation) this.recommendationList.get(index);
+    Recommendation recommend = this.recommendationList.get(index);
 
     if (recommend == null) {
       System.out.println("게시물 인덱스가 유효하지 않습니다.");

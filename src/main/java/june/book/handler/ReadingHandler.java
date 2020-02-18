@@ -2,27 +2,28 @@ package june.book.handler;
 
 import java.util.Scanner;
 import june.book.domain.Reading;
+import june.util.ArrayList;
 
 public class ReadingHandler {
 
-  ArrayList readingList;
+  ArrayList<Reading> readingList;
 
-  public Scanner input;
+  Scanner input;
 
   public ReadingHandler(Scanner input) {
     this.input = input;
-    readingList = new ArrayList();
+    this.readingList = new ArrayList<>();
   }
 
   public ReadingHandler(Scanner input, int capacity) {
     this.input = input;
-    readingList = new ArrayList(capacity);
+    readingList = new ArrayList<>(capacity);
   }
 
   public void listReading() {
-    Object[] arr = readingList.toArray();
-    for (Object obj : arr) {
-      Reading r = (Reading) obj;
+    Reading[] arr = this.readingList.toArray(new Reading[this.readingList.size()]);
+
+    for (Reading r : arr) {
       System.out.printf("%d, %s, %s, %s, %s, %s\n", r.getNo(), r.getTitle(), r.getAuthor(),
           r.getPublisher(), r.getCategories(), r.getPublishedDate());
     }
@@ -61,7 +62,7 @@ public class ReadingHandler {
     int index = input.nextInt();
     input.nextLine();
 
-    Reading reading = (Reading) this.readingList.get(index);
+    Reading reading = this.readingList.get(index);
 
     if (reading == null) {
       System.out.println("게시물 인덱스가 유효하지 않습니다.");
