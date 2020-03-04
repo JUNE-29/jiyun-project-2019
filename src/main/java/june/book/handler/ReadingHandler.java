@@ -80,9 +80,8 @@ public class ReadingHandler {
     }
 
 
-    Reading newReading = new Reading();
-
     Reading oldReading = this.readingList.get(index);
+    Reading newReading = new Reading();
 
     newReading.setNo(oldReading.getNo());
 
