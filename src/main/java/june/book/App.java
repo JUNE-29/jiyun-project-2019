@@ -36,6 +36,14 @@ public class App {
           readingHandler.detailReading();
           break;
 
+        case "/reading/update":
+          readingHandler.updateReading();
+          break;
+
+        case "/reading/delete":
+          readingHandler.deleteReading();
+          break;
+
         case "/recommend/add":
           recommendHandler.addRecommendation();
           break;
@@ -48,6 +56,14 @@ public class App {
           recommendHandler.detailRecommendation();
           break;
 
+        case "/recommend/update":
+          recommendHandler.updateRecommendation();
+          break;
+
+        case "/recommend/delete":
+          recommendHandler.deleteRecommendation();
+          break;
+
         case "/review/add":
           reviewHandler.addReview();
           break;
@@ -58,6 +74,14 @@ public class App {
 
         case "/review/detail":
           reviewHandler.detailReview();
+          break;
+
+        case "/review/update":
+          reviewHandler.updateReview();
+          break;
+
+        case "/review/delete":
+          reviewHandler.deleteReview();
           break;
 
         default:

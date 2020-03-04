@@ -4,54 +4,102 @@ import java.util.Arrays;
 
 public class ArrayList<E> {
 
-  static final int DEFAULT_CAPACITY = 3;
+  final static int DEAULT_CAPACITY = 2;
 
-  Object[] list;
-  int size = 0;
+  Object[] elementData;
+  int size;
 
   public ArrayList() {
-    this.list = new Object[DEFAULT_CAPACITY];
+    this.elementData = new Object[DEAULT_CAPACITY];
   }
 
-  public ArrayList(int capacity) {
-    if (capacity < DEFAULT_CAPACITY || capacity > 10000)
-      this.list = new Object[DEFAULT_CAPACITY];
-    else
-      this.list = new Object[capacity];
-  }
-
-  @SuppressWarnings("unchecked")
-  public E[] toArray(E[] arr) {
-
-    if (arr.length < this.size) {
-      return (E[]) Arrays.copyOf(this.list, this.size, arr.getClass());
-    }
-    System.arraycopy(this.list, 0, arr, 0, this.size);
-
-    return arr;
-  }
-
-  public void add(Object obj) {
-    if (this.size == this.list.length) {
-      int oldCapacity = this.list.length;
-      int newCapacity = oldCapacity + (oldCapacity >> 1);
-      this.list = Arrays.copyOf(this.list, newCapacity);
-    }
-    this.list[this.size++] = obj;
-  }
-
-
-  @SuppressWarnings("unchecked")
-  public E get(int idx) {
-    if (idx >= 0 && idx < this.size) {
-      return (E) this.list[idx];
+  public ArrayList(int initialCapacity) {
+    if (initialCapacity < DEAULT_CAPACITY) {
+      this.elementData = new Object[DEAULT_CAPACITY];
     } else {
+      this.elementData = new Object[initialCapacity];
+    }
+  }
+
+  public void add(E e) {
+    if (this.size == this.elementData.length) {
+      grow();
+    }
+    this.elementData[this.size++] = e;
+  }
+
+  @SuppressWarnings("unchecked")
+  public E get(int index) {
+    if (index < 0 || index >= this.size) {
       return null;
     }
+    return (E) this.elementData[index];
+  }
+
+  @SuppressWarnings("unchecked")
+  public E set(int index, E e) {
+    if (index < 0 || index >= this.size) {
+      return null;
+    }
+    E oldValue = (E) this.elementData[index];
+    this.elementData[index] = e;
+    return oldValue;
+  }
+
+  @SuppressWarnings("unchecked")
+  public E remove(int index) {
+    if (index < 0 || index >= this.size) {
+      return null;
+    }
+
+    E oldValue = (E) this.elementData[index];
+
+    System.arraycopy(this.elementData, index + 1, this.elementData, index, this.size - (index + 1));
+
+    this.size--;
+    return oldValue;
   }
 
   public int size() {
     return this.size;
   }
 
+  public Object[] toArray() {
+    return Arrays.copyOf(this.elementData, this.size);
+  }
+
+  @SuppressWarnings("unchecked")
+  public E[] toArray(E[] arr) {
+    if (arr.length < this.size) {
+      return (E[]) Arrays.copyOf(this.elementData, this.size, arr.getClass());
+    }
+    System.arraycopy(this.elementData, 0, arr, 0, this.size);
+    return arr;
+  }
+
+  public void add(int index, E value) {
+
+    if (index < 0 || index >= this.size) {
+      return;
+    }
+
+    if (this.size == this.elementData.length) {
+      grow();
+    }
+
+    for (int i = size - 1; i >= index; i--)
+      this.elementData[i + 1] = this.elementData[i];
+
+    this.elementData[index] = value;
+    this.size++;
+  }
+
+  private Object[] grow() {
+    return this.elementData = Arrays.copyOf(this.elementData, newCapacity());
+  }
+
+  private int newCapacity() {
+    int oldSize = this.elementData.length;
+    return oldSize + (oldSize >> 1);
+  }
 }

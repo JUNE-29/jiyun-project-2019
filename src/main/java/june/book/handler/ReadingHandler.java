@@ -1,27 +1,29 @@
 package june.book.handler;
 
-import java.util.Scanner;
 import june.book.domain.Reading;
 import june.util.ArrayList;
+import june.util.Prompt;
 
 public class ReadingHandler {
 
   ArrayList<Reading> readingList;
 
-  Scanner input;
+  public Prompt prompt;
 
-  public ReadingHandler(Scanner input) {
-    this.input = input;
+  public ReadingHandler(Prompt prompt) {
+    this.prompt = prompt;
     this.readingList = new ArrayList<>();
   }
 
-  public ReadingHandler(Scanner input, int capacity) {
-    this.input = input;
+  public ReadingHandler(Prompt prompt, int capacity) {
+    this.prompt = prompt;
     readingList = new ArrayList<>(capacity);
   }
 
   public void listReading() {
-    Reading[] arr = this.readingList.toArray(new Reading[this.readingList.size()]);
+
+    Reading[] arr = new Reading[this.readingList.size()];
+    this.readingList.toArray(arr);
 
     for (Reading r : arr) {
       System.out.printf("%d, %s, %s, %s, %s, %s\n", r.getNo(), r.getTitle(), r.getAuthor(),
@@ -32,25 +34,17 @@ public class ReadingHandler {
   public void addReading() {
     Reading read = new Reading();
 
-    System.out.print("번호? ");
-    read.setNo(input.nextInt());
+    read.setNo(prompt.inputInt("번호? "));
 
-    input.nextLine();
+    read.setTitle(prompt.inputString("도서명? "));
 
-    System.out.print("도서명? ");
-    read.setTitle(input.nextLine());
+    read.setAuthor(prompt.inputString("지은이? "));
 
-    System.out.print("지은이? ");
-    read.setAuthor(input.nextLine());
+    read.setPublisher(prompt.inputString("출판사? "));
 
-    System.out.print("출판사? ");
-    read.setPublisher(input.nextLine());
+    read.setCategories(prompt.inputString("카테고리? "));
 
-    System.out.print("카테고리? ");
-    read.setCategories(input.nextLine());
-
-    System.out.print("출판 연도? ");
-    read.setPublishedDate(input.nextLine());
+    read.setPublishedDate(prompt.inputString("출판 연도? "));
 
     this.readingList.add(read);
 
@@ -58,17 +52,15 @@ public class ReadingHandler {
   }
 
   public void detailReading() {
-    System.out.print("게시물 인덱스? ");
-    int index = input.nextInt();
-    input.nextLine();
 
-    Reading reading = this.readingList.get(index);
+    int index = indexOfReading(prompt.inputInt("번호? "));
 
-    if (reading == null) {
-      System.out.println("게시물 인덱스가 유효하지 않습니다.");
+    if (index == -1) {
+      System.out.println("읽을 도서 정보의 번호가 유효하지 않습니다.");
       return;
     }
 
+    Reading reading = this.readingList.get(index);
     System.out.printf("번호: %d\n", reading.getNo());
     System.out.printf("도서명: %s\n", reading.getTitle());
     System.out.printf("지은이: %s\n", reading.getAuthor());
@@ -78,4 +70,67 @@ public class ReadingHandler {
 
   }
 
+  public void updateReading() {
+
+    int index = indexOfReading(prompt.inputInt("번호? "));
+
+    if (index == -1) {
+      System.out.println("읽을 도서 정보의 번호가 유효하지 않습니다.");
+      return;
+    }
+
+
+    Reading newReading = new Reading();
+
+    Reading oldReading = this.readingList.get(index);
+
+    newReading.setNo(oldReading.getNo());
+
+    newReading.setTitle(prompt.inputString(String.format("도서명(%s)? ", oldReading.getTitle()),
+        oldReading.getTitle()));
+
+    newReading.setAuthor(prompt.inputString(String.format("지은이(%s)? ", oldReading.getAuthor()),
+        oldReading.getAuthor()));
+
+    newReading.setPublisher(prompt.inputString(
+        String.format("출판사(%s)? ", oldReading.getPublisher()), oldReading.getPublisher()));
+
+    newReading.setCategories(prompt.inputString(
+        String.format("카테고리(%s)? ", oldReading.getCategories()), oldReading.getCategories()));
+
+    newReading.setPublishedDate(
+        prompt.inputString(String.format("출판 연도(%s)? ", oldReading.getPublishedDate()),
+            oldReading.getPublishedDate()));
+
+    if (oldReading.equals(newReading)) {
+      System.out.println("읽을 도서 정보 변경을 취소했습니다.");
+      return;
+    }
+
+    this.readingList.set(index, newReading);
+    System.out.println("읽을 도서 정보 변경했습니다.");
+  }
+
+  public void deleteReading() {
+
+    int index = indexOfReading(prompt.inputInt("번호? "));
+
+    if (index == -1) {
+      System.out.println("읽을 도서 정보의 번호가 유효하지 않습니다.");
+      return;
+    }
+
+    this.readingList.remove(index);
+
+    System.out.println("읽을 도서 정보를 삭제했습니다.");
+  }
+
+  private int indexOfReading(int no) {
+    for (int i = 0; i < this.readingList.size(); i++) {
+      if (this.readingList.get(i).getNo() == no) {
+        return i;
+      }
+    }
+    return -1;
+  }
 }
