@@ -1,23 +1,23 @@
 package june.book.handler;
 
 import java.sql.Date;
-import java.util.Scanner;
 import june.book.domain.Review;
 import june.util.ArrayList;
+import june.util.Prompt;
 
 public class ReviewHandler {
 
   ArrayList<Review> reviewList;
 
-  Scanner input;
+  Prompt prompt;
 
-  public ReviewHandler(Scanner input) {
-    this.input = input;
+  public ReviewHandler(Prompt prompt) {
+    this.prompt = prompt;
     this.reviewList = new ArrayList<>();
   }
 
-  public ReviewHandler(Scanner input, int capacity) {
-    this.input = input;
+  public ReviewHandler(Prompt prompt, int capacity) {
+    this.prompt = prompt;
     this.reviewList = new ArrayList<>(capacity);
   }
 
@@ -33,39 +33,30 @@ public class ReviewHandler {
   public void addReview() {
     Review review = new Review();
 
-    System.out.print("번호? ");
-    review.setNo(input.nextInt());
-    input.nextLine();
+    review.setNo(prompt.inputInt("번호? "));
 
-    System.out.print("도서명? ");
-    review.setBookTitle(input.nextLine());
+    review.setBookTitle(prompt.inputString("도서명? "));
 
-    System.out.print("제목? ");
-    review.setTitle(input.nextLine());
+    review.setTitle(prompt.inputString("제목? "));
 
-    System.out.print("내용? ");
-    review.setContents(input.nextLine());
+    review.setContents(prompt.inputString("내용? "));
 
-    System.out.print("이미지? ");
-    review.setPhoto(input.nextLine());
+    review.setPhoto(prompt.inputString("이미지? "));
 
-    System.out.print("책에 대한 점수(5.0점만점)? ");
-    review.setScore(input.nextFloat());
-    input.nextLine();
+    review.setScore(prompt.inputFloat("책에 대한 점수(5.0점만점)? "));
 
     review.setDate(new Date(System.currentTimeMillis()));
     review.setViewCount(0);
 
     reviewList.add(review);
+
     System.out.println("저장하였습니다.");
   }
 
   public void detailReview() {
-    System.out.print("번호? ");
-    int no = input.nextInt();
-    input.nextLine();
 
-    int index = indexOfRecommendation(no);
+    int index = indexOfRecommendation(prompt.inputInt("번호? "));
+
     if (index == -1) {
       System.out.println("읽은 도서 정보의 번호가 유효하지 않습니다.");
       return;
@@ -84,87 +75,52 @@ public class ReviewHandler {
 
   public void updateReview() {
 
-    System.out.print("번호? ");
-    int no = input.nextInt();
-    input.nextLine();
+    int index = indexOfRecommendation(prompt.inputInt("번호? "));
 
-    int index = indexOfRecommendation(no);
     if (index == -1) {
       System.out.println("읽은 도서 정보의 번호가 유효하지 않습니다.");
       return;
     }
-
-    boolean changed = false;
-    String inputStr = null;
 
     Review oldReview = this.reviewList.get(index);
     Review newReview = new Review();
 
     newReview.setNo(oldReview.getNo());
 
-    System.out.printf("도서명(%s)? ", oldReview.getBookTitle());
-    inputStr = input.nextLine();
-    if (inputStr.length() == 0) {
-      newReview.setBookTitle(oldReview.getBookTitle());
-    } else {
-      newReview.setBookTitle(inputStr);
-      changed = true;
-    }
+    newReview.setBookTitle(//
+        prompt.inputString(String.format("도서명(%s)? ", oldReview.getBookTitle()),
+            oldReview.getBookTitle()));
 
-    System.out.printf("제목(%s)? ", oldReview.getTitle());
-    inputStr = input.nextLine();
-    if (inputStr.length() == 0) {
-      newReview.setTitle(oldReview.getTitle());
-    } else {
-      newReview.setTitle(inputStr);
-      changed = true;
-    }
+    newReview.setTitle(//
+        prompt.inputString(String.format("제목(%s)? ", oldReview.getTitle()), oldReview.getTitle()));
 
-    System.out.printf("내용(%s)? ", oldReview.getContents());
-    inputStr = input.nextLine();
-    if (inputStr.length() == 0) {
-      newReview.setContents(oldReview.getContents());
-    } else {
-      newReview.setContents(inputStr);
-      changed = true;
-    }
+    newReview.setContents(//
+        prompt.inputString(String.format("내용(%s)? ", oldReview.getContents()),
+            oldReview.getContents()));
 
+    newReview.setPhoto(//
+        prompt.inputString(String.format("이미지(%s)? ", oldReview.getPhoto()), oldReview.getPhoto()));
 
-    System.out.printf("내용(%s)? ", oldReview.getPhoto());
-    inputStr = input.nextLine();
-    if (inputStr.length() == 0) {
-      newReview.setPhoto(oldReview.getPhoto());
-    } else {
-      newReview.setPhoto(inputStr);
-      changed = true;
-    }
-
-    System.out.printf("평가(%1.1f점)? ", oldReview.getScore());
-    inputStr = input.nextLine();
-    if (inputStr.length() == 0) {
-      newReview.setScore(oldReview.getScore());
-    } else {
-      newReview.setScore(Float.parseFloat(inputStr));
-      changed = true;
-    }
+    newReview.setScore(//
+        prompt.inputFloat(String.format("평가(%1.1f점)? ", oldReview.getScore()),
+            oldReview.getScore()));
 
     newReview.setDate(new Date(System.currentTimeMillis()));
     newReview.setViewCount(oldReview.getViewCount());
 
-    if (changed) {
-      this.reviewList.set(index, newReview);
-      System.out.println("읽은 도서 정보를 변경했습니다.");
-    } else {
+    if (oldReview.equals(newReview)) {
       System.out.println("읽은 도서 정보의 변경을 취소했습니다.");
+      return;
     }
+
+    this.reviewList.set(index, newReview);
+    System.out.println("읽은 도서 정보를 변경했습니다.");
+
   }
 
   public void deleteReview() {
-    System.out.print("번호? ");
-    int no = input.nextInt();
-    input.nextLine();
+    int index = indexOfRecommendation(prompt.inputInt("번호? "));
 
-    int index = indexOfRecommendation(no);
     if (index == -1) {
       System.out.println("읽은 도서 정보의 번호가 유효하지 않습니다.");
       return;

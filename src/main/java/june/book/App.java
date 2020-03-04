@@ -4,6 +4,7 @@ import java.util.Scanner;
 import june.book.handler.ReadingHandler;
 import june.book.handler.RecommendationHandler;
 import june.book.handler.ReviewHandler;
+import june.util.Prompt;
 
 public class App {
 
@@ -11,10 +12,11 @@ public class App {
 
   public static void main(String[] args) {
 
+    Prompt prompt = new Prompt(keyboard);
 
-    ReadingHandler readingHandler = new ReadingHandler(keyboard);
-    RecommendationHandler recommendHandler = new RecommendationHandler(keyboard);
-    ReviewHandler reviewHandler = new ReviewHandler(keyboard);
+    ReadingHandler readingHandler = new ReadingHandler(prompt);
+    RecommendationHandler recommendHandler = new RecommendationHandler(prompt);
+    ReviewHandler reviewHandler = new ReviewHandler(prompt);
 
 
     String command;

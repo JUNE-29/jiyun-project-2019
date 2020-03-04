@@ -25,8 +25,8 @@ public class RecommendationHandler {
         this.recommendationList.toArray(new Recommendation[this.recommendationList.size()]);
 
     for (Recommendation rec : arr) {
-      System.out.printf("%d, %s세, %s, %s, #%s, %s\n", rec.getNo(), rec.getAge(),
-          rec.getCategories(), rec.getCharacter(), rec.getKeyword());
+      System.out.printf("%d, %s세, %s, %s, #%s\n", rec.getNo(), rec.getAge(), rec.getCategories(),
+          rec.getCharacter(), rec.getKeyword());
     }
   }
 

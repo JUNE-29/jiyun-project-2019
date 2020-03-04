@@ -52,4 +52,19 @@ public class Prompt {
     }
     return Date.valueOf(value);
   }
+
+  public float inputFloat(String label) {
+    System.out.print(label);
+    return Float.parseFloat(input.nextLine());
+  }
+
+  public float inputFloat(String label, float defaultValue) {
+    System.out.print(label);
+    String value = input.nextLine();
+    if (value.length() == 0) {
+      return defaultValue;
+    }
+    return Float.parseFloat(value);
+  }
+
 }
