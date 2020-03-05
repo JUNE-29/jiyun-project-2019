@@ -1,16 +1,16 @@
 package june.book.handler;
 
 import june.book.domain.Reading;
-import june.util.List;
+import june.util.AbstractList;
 import june.util.Prompt;
 
 public class ReadingHandler {
 
-  List<Reading> readingList;
+  AbstractList<Reading> readingList;
 
   public Prompt prompt;
 
-  public ReadingHandler(Prompt prompt, List<Reading> list) {
+  public ReadingHandler(Prompt prompt, AbstractList<Reading> list) {
     this.prompt = prompt;
     this.readingList = list;
   }

@@ -2,7 +2,7 @@ package june.util;
 
 import java.util.Arrays;
 
-public class ArrayList<E> extends List<E> {
+public class ArrayList<E> extends AbstractList<E> {
 
   final static int DEAULT_CAPACITY = 2;
 
