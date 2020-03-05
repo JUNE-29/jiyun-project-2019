@@ -66,7 +66,6 @@ public class LinkedList<E> {
     Node<E> cursor = first;
     for (int i = 0; i < index - 1; i++) {
       cursor = cursor.next;
-      // 전 커서를 찾는 식
     }
 
     Node<E> deletedNode = null;
@@ -87,7 +86,6 @@ public class LinkedList<E> {
   public E set(int index, E value) {
     if (index < 0 || index >= size)
       return null;
-    // 찾는 식
 
     Node<E> cursor = first;
     for (int i = 0; i < index; i++) {
