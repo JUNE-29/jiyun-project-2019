@@ -1,9 +1,14 @@
 package june.book;
 
 import java.util.Scanner;
+import june.book.domain.Reading;
+import june.book.domain.Recommendation;
+import june.book.domain.Review;
 import june.book.handler.ReadingHandler;
 import june.book.handler.RecommendationHandler;
 import june.book.handler.ReviewHandler;
+import june.util.ArrayList;
+import june.util.LinkedList;
 import june.util.Prompt;
 import june.util.Queue;
 import june.util.Stack;
@@ -19,9 +24,14 @@ public class App {
 
     Prompt prompt = new Prompt(keyboard);
 
-    ReadingHandler readingHandler = new ReadingHandler(prompt);
-    RecommendationHandler recommendHandler = new RecommendationHandler(prompt);
-    ReviewHandler reviewHandler = new ReviewHandler(prompt);
+    LinkedList<Reading> readingList = new LinkedList<>();
+    ReadingHandler readingHandler = new ReadingHandler(prompt, readingList);
+
+    ArrayList<Recommendation> recommendationList = new ArrayList<>();
+    RecommendationHandler recommendHandler = new RecommendationHandler(prompt, recommendationList);
+
+    LinkedList<Review> reviewList = new LinkedList<>();
+    ReviewHandler reviewHandler = new ReviewHandler(prompt, reviewList);
 
 
     String command;

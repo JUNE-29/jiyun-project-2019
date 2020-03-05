@@ -1,18 +1,18 @@
 package june.book.handler;
 
 import june.book.domain.Reading;
-import june.util.LinkedList;
+import june.util.List;
 import june.util.Prompt;
 
 public class ReadingHandler {
 
-  LinkedList<Reading> readingList;
+  List<Reading> readingList;
 
   public Prompt prompt;
 
-  public ReadingHandler(Prompt prompt) {
+  public ReadingHandler(Prompt prompt, List<Reading> list) {
     this.prompt = prompt;
-    this.readingList = new LinkedList<>();
+    this.readingList = list;
   }
 
   public void listReading() {
