@@ -1,24 +1,20 @@
 package june.book.handler;
 
 import june.book.domain.Recommendation;
-import june.util.ArrayList;
+import june.util.LinkedList;
 import june.util.Prompt;
 
 public class RecommendationHandler {
 
-  ArrayList<Recommendation> recommendationList;
+  LinkedList<Recommendation> recommendationList;
 
   Prompt prompt;
 
   public RecommendationHandler(Prompt prompt) {
     this.prompt = prompt;
-    this.recommendationList = new ArrayList<>();
+    this.recommendationList = new LinkedList<>();
   }
 
-  public RecommendationHandler(Prompt prompt, int capacity) {
-    this.prompt = prompt;
-    recommendationList = new ArrayList<>(capacity);
-  }
 
   public void listRecommendation() {
     Recommendation[] arr =

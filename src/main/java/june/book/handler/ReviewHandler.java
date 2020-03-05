@@ -2,23 +2,18 @@ package june.book.handler;
 
 import java.sql.Date;
 import june.book.domain.Review;
-import june.util.ArrayList;
+import june.util.LinkedList;
 import june.util.Prompt;
 
 public class ReviewHandler {
 
-  ArrayList<Review> reviewList;
+  LinkedList<Review> reviewList;
 
   Prompt prompt;
 
   public ReviewHandler(Prompt prompt) {
     this.prompt = prompt;
-    this.reviewList = new ArrayList<>();
-  }
-
-  public ReviewHandler(Prompt prompt, int capacity) {
-    this.prompt = prompt;
-    this.reviewList = new ArrayList<>(capacity);
+    this.reviewList = new LinkedList<>();
   }
 
   public void listReview() {

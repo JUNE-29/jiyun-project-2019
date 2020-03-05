@@ -1,30 +1,23 @@
 package june.book.handler;
 
 import june.book.domain.Reading;
-import june.util.ArrayList;
+import june.util.LinkedList;
 import june.util.Prompt;
 
 public class ReadingHandler {
 
-  ArrayList<Reading> readingList;
+  LinkedList<Reading> readingList;
 
   public Prompt prompt;
 
   public ReadingHandler(Prompt prompt) {
     this.prompt = prompt;
-    this.readingList = new ArrayList<>();
-  }
-
-  public ReadingHandler(Prompt prompt, int capacity) {
-    this.prompt = prompt;
-    readingList = new ArrayList<>(capacity);
+    this.readingList = new LinkedList<>();
   }
 
   public void listReading() {
 
-    Reading[] arr = new Reading[this.readingList.size()];
-    this.readingList.toArray(arr);
-
+    Reading[] arr = this.readingList.toArray(new Reading[this.readingList.size()]);
     for (Reading r : arr) {
       System.out.printf("%d, %s, %s, %s, %s, %s\n", r.getNo(), r.getTitle(), r.getAuthor(),
           r.getPublisher(), r.getCategories(), r.getPublishedDate());
