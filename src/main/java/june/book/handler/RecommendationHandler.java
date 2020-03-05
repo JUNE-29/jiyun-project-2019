@@ -1,16 +1,16 @@
 package june.book.handler;
 
 import june.book.domain.Recommendation;
-import june.util.AbstractList;
+import june.util.List;
 import june.util.Prompt;
 
 public class RecommendationHandler {
 
-  AbstractList<Recommendation> recommendationList;
+  List<Recommendation> recommendationList;
 
   Prompt prompt;
 
-  public RecommendationHandler(Prompt prompt, AbstractList<Recommendation> list) {
+  public RecommendationHandler(Prompt prompt, List<Recommendation> list) {
     this.prompt = prompt;
     this.recommendationList = list;
   }

@@ -2,16 +2,16 @@ package june.book.handler;
 
 import java.sql.Date;
 import june.book.domain.Review;
-import june.util.AbstractList;
+import june.util.List;
 import june.util.Prompt;
 
 public class ReviewHandler {
 
-  AbstractList<Review> reviewList;
+  List<Review> reviewList;
 
   Prompt prompt;
 
-  public ReviewHandler(Prompt prompt, AbstractList<Review> list) {
+  public ReviewHandler(Prompt prompt, List<Review> list) {
     this.prompt = prompt;
     this.reviewList = list;
   }
