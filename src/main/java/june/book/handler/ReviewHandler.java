@@ -2,6 +2,7 @@ package june.book.handler;
 
 import java.sql.Date;
 import june.book.domain.Review;
+import june.util.Iterator;
 import june.util.List;
 import june.util.Prompt;
 
@@ -17,9 +18,9 @@ public class ReviewHandler {
   }
 
   public void listReview() {
-    Review[] arr = this.reviewList.toArray(new Review[reviewList.size()]);
-
-    for (Review rev : arr) {
+    Iterator<Review> iterator = reviewList.iterator();
+    while (iterator.hasNext()) {
+      Review rev = iterator.next();
       System.out.printf("%d, %s, 제목: %s, %1.1f점, %s, %d\n", rev.getNo(), rev.getBookTitle(),
           rev.getTitle(), rev.getScore(), rev.getDate(), rev.getViewCount());
     }

@@ -20,4 +20,9 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
     return temp;
   }
 
+  @Override
+  public Iterator<E> iterator() {
+    return new QueueIterator<>(this);
+  }
+
 }

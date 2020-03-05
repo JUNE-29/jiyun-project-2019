@@ -1,6 +1,7 @@
 package june.book.handler;
 
 import june.book.domain.Reading;
+import june.util.Iterator;
 import june.util.List;
 import june.util.Prompt;
 
@@ -16,9 +17,9 @@ public class ReadingHandler {
   }
 
   public void listReading() {
-
-    Reading[] arr = this.readingList.toArray(new Reading[this.readingList.size()]);
-    for (Reading r : arr) {
+    Iterator<Reading> iterator = readingList.iterator();
+    while (iterator.hasNext()) {
+      Reading r = iterator.next();
       System.out.printf("%d, %s, %s, %s, %s, %s\n", r.getNo(), r.getTitle(), r.getAuthor(),
           r.getPublisher(), r.getCategories(), r.getPublishedDate());
     }

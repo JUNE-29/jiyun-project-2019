@@ -1,6 +1,7 @@
 package june.book.handler;
 
 import june.book.domain.Recommendation;
+import june.util.Iterator;
 import june.util.List;
 import june.util.Prompt;
 
@@ -17,10 +18,9 @@ public class RecommendationHandler {
 
 
   public void listRecommendation() {
-    Recommendation[] arr =
-        this.recommendationList.toArray(new Recommendation[this.recommendationList.size()]);
-
-    for (Recommendation rec : arr) {
+    Iterator<Recommendation> iterator = recommendationList.iterator();
+    while (iterator.hasNext()) {
+      Recommendation rec = iterator.next();
       System.out.printf("%d, %s세, %s, %s, #%s\n", rec.getNo(), rec.getAge(), rec.getCategories(),
           rec.getCharacter(), rec.getKeyword());
     }
