@@ -5,10 +5,13 @@ import june.book.handler.ReadingHandler;
 import june.book.handler.RecommendationHandler;
 import june.book.handler.ReviewHandler;
 import june.util.Prompt;
+import june.util.Stack;
 
 public class App {
 
   static Scanner keyboard = new Scanner(System.in);
+
+  static Stack<String> commandStack = new Stack<>();
 
   public static void main(String[] args) {
 
@@ -24,6 +27,11 @@ public class App {
     do {
       System.out.print("\n명령> ");
       command = keyboard.nextLine();
+
+      if (command.length() == 0)
+        continue;
+
+      commandStack.push(command);
 
       switch (command) {
         case "/reading/add":
@@ -86,6 +94,10 @@ public class App {
           reviewHandler.deleteReview();
           break;
 
+        case "history":
+          printCommandHistory();
+          break;
+
         default:
           if (!command.equalsIgnoreCase("quit")) {
             System.out.println("실행할 수 없는 명령입니다.");
@@ -97,4 +109,22 @@ public class App {
 
     keyboard.close();
   }
+
+  private static void printCommandHistory() {
+    Stack<String> historyStack = commandStack.clone();
+    int count = 0;
+    while (!historyStack.empty()) {
+      System.out.println(historyStack.pop());
+      count++;
+
+      if ((count % 5) == 0) {
+        System.out.print(":");
+        String str = keyboard.nextLine();
+        if (str.equalsIgnoreCase("q")) {
+          break;
+        }
+      }
+    }
+  }
+
 }
