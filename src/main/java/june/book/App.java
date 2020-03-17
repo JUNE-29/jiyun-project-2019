@@ -1,9 +1,11 @@
 package june.book;
 
 import java.util.Scanner;
+import june.book.domain.Member;
 import june.book.domain.Reading;
 import june.book.domain.Recommendation;
 import june.book.domain.Review;
+import june.book.handler.MemberHandler;
 import june.book.handler.ReadingHandler;
 import june.book.handler.RecommendationHandler;
 import june.book.handler.ReviewHandler;
@@ -33,6 +35,9 @@ public class App {
 
     LinkedList<Review> reviewList = new LinkedList<>();
     ReviewHandler reviewHandler = new ReviewHandler(prompt, reviewList);
+
+    LinkedList<Member> memberList = new LinkedList<>();
+    MemberHandler memberHandler = new MemberHandler(prompt, memberList);
 
 
     String command;
@@ -106,6 +111,26 @@ public class App {
 
         case "/review/delete":
           reviewHandler.deleteReview();
+          break;
+
+        case "/member/add":
+          memberHandler.addMember();
+          break;
+
+        case "/member/list":
+          memberHandler.listMember();
+          break;
+
+        case "/member/detail":
+          memberHandler.detailMember();
+          break;
+
+        case "/member/update":
+          memberHandler.updateMember();
+          break;
+
+        case "/member/delete":
+          memberHandler.deleteMember();
           break;
 
         case "history":
