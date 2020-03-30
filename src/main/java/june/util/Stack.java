@@ -30,6 +30,7 @@ public class Stack<E> implements Cloneable {
     return oldCapacity + (oldCapacity >> 1);
   }
 
+  @SuppressWarnings("unchecked")
   public E pop() {
     if (this.empty())
       return null;
@@ -64,16 +65,17 @@ public class Stack<E> implements Cloneable {
   }
 
   public Iterator<E> iterator() {
-    return new StackIterator<E>(this);
+    return this.new StackIterator<E>();
   }
 
 
-  static public class StackIterator<E> implements Iterator<E> {
+  public class StackIterator<T> implements Iterator<T> {
 
-    Stack<E> stack;
+    Stack<T> stack;
 
-    public StackIterator(Stack<E> stack) {
-      this.stack = stack.clone();
+    @SuppressWarnings("unchecked")
+    public StackIterator() {
+      this.stack = (Stack<T>) Stack.this.clone();
     }
 
     @Override
@@ -82,7 +84,7 @@ public class Stack<E> implements Cloneable {
     }
 
     @Override
-    public E next() {
+    public T next() {
       return stack.pop();
     }
   }
