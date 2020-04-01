@@ -1,9 +1,9 @@
 package june.book.handler;
 
 import java.sql.Date;
+import java.util.Iterator;
+import java.util.List;
 import june.book.domain.Review;
-import june.util.Iterator;
-import june.util.List;
 import june.util.Prompt;
 
 public class ReviewHandler {

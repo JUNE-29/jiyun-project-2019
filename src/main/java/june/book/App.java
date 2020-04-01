@@ -1,5 +1,11 @@
 package june.book;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import june.book.domain.Member;
 import june.book.domain.Reading;
@@ -9,19 +15,14 @@ import june.book.handler.MemberHandler;
 import june.book.handler.ReadingHandler;
 import june.book.handler.RecommendationHandler;
 import june.book.handler.ReviewHandler;
-import june.util.ArrayList;
-import june.util.Iterator;
-import june.util.LinkedList;
 import june.util.Prompt;
-import june.util.Queue;
-import june.util.Stack;
 
 public class App {
 
   static Scanner keyboard = new Scanner(System.in);
 
-  static Stack<String> commandStack = new Stack<>();
-  static Queue<String> commandQueue = new Queue<>();
+  static Deque<String> commandStack = new ArrayDeque<>();
+  static Queue<String> commandQueue = new LinkedList<>();
 
   public static void main(String[] args) {
 

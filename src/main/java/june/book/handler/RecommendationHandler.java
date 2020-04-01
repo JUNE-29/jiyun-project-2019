@@ -1,8 +1,8 @@
 package june.book.handler;
 
+import java.util.Iterator;
+import java.util.List;
 import june.book.domain.Recommendation;
-import june.util.Iterator;
-import june.util.List;
 import june.util.Prompt;
 
 public class RecommendationHandler {
