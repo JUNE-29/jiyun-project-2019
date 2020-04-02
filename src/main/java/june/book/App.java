@@ -45,9 +45,7 @@ public class App {
   public static void main(String[] args) {
 
     Prompt prompt = new Prompt(keyboard);
-
     HashMap<String, Command> commandMap = new HashMap<>();
-
 
     LinkedList<Reading> readingList = new LinkedList<>();
     commandMap.put("/reading/add", new ReadingAddCommand(prompt, readingList));
@@ -73,14 +71,12 @@ public class App {
     commandMap.put("/review/update", new ReviewUpdateCommand(prompt, reviewList));
     commandMap.put("/review/delete", new ReviewDeleteCommand(prompt, reviewList));
 
-
     LinkedList<Member> memberList = new LinkedList<>();
     commandMap.put("/member/add", new MemberAddCommand(prompt, memberList));
     commandMap.put("/member/list", new MemberListCommand(memberList));
     commandMap.put("/member/detail", new MemberDetailCommand(prompt, memberList));
     commandMap.put("/member/update", new MemberUpdateCommand(prompt, memberList));
     commandMap.put("/member/delete", new MemberDeleteCommand(prompt, memberList));
-
 
     String command;
 
@@ -110,7 +106,11 @@ public class App {
       Command commandHandler = commandMap.get(command);
 
       if (commandHandler != null) {
-        commandHandler.execute();
+        try {
+          commandHandler.execute();
+        } catch (Exception e) {
+          System.out.printf("명령어 실행중 오류 발생: %s \n", e.getMessage());
+        }
       } else {
         System.out.println("실행할 수 없는 명령입니다.");
       }
