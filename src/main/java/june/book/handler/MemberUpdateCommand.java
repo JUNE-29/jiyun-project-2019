@@ -44,12 +44,12 @@ public class MemberUpdateCommand implements Command {
     newMember.setRegisteredDate(new Date(System.currentTimeMillis()));
 
     if (oldMember.equals(newMember)) {
-      System.out.println("수업을 변경을 취소했습니다.");
+      System.out.println("회원을 변경을 취소했습니다.");
       return;
     }
 
     this.memberList.set(index, newMember);
-    System.out.println("수업을 변경했습니다.");
+    System.out.println("회원을 변경했습니다.");
   }
 
   private int indexOfMember(int no) {

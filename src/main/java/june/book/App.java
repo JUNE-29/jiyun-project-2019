@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -54,9 +55,13 @@ public class App {
 
   public static void main(String[] args) {
 
+    loadMemberData();
+    loadBookBoardData();
+    loadBookBasketData();
+    loadTranscriptionData();
+
     Prompt prompt = new Prompt(keyboard);
     HashMap<String, Command> commandMap = new HashMap<>();
-
 
     commandMap.put("/basket/add", new BookBasketAddCommand(prompt, bookBasketList));
     commandMap.put("/basket/list", new BookBasketListCommand(bookBasketList));
@@ -126,7 +131,14 @@ public class App {
     }
 
     keyboard.close();
-  }
+
+    saveMemberData();
+    saveBookBoardData();
+    saveBookBasketData();
+    saveTranscriptionData();
+
+
+  } // main()
 
 
   private static void printCommandHistory(Iterator<String> iterator) {
@@ -196,7 +208,6 @@ public class App {
 
     } catch (FileNotFoundException e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
-
     } finally {
       try {
         dataScan.close();
@@ -213,6 +224,260 @@ public class App {
     File file = new File("./member.csv");
 
     FileWriter out = null;
+
+    try {
+      out = new FileWriter(file);
+      int count = 0;
+
+      for (Member member : memberList) {
+        String line = String.format("%d,%s,%s,%s,%s,%s\n", //
+            member.getNo(), member.getName(), member.getEmail(), member.getPassword(),
+            member.getPhoto(), member.getRegisteredDate());
+
+        out.write(line);
+        count++;
+      }
+      System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", count);
+    } catch (IOException e) {
+      System.out.println("파일 쓰기 중 오류 발생! -" + e.getMessage());
+    } finally {
+      try {
+        out.close();
+      } catch (IOException e) {
+
+      }
+    }
+  }
+
+  private static void loadBookBoardData() {
+    File file = new File("./bookBoard.csv");
+
+    FileReader in = null;
+    Scanner dataScan = null;
+
+    try {
+      in = new FileReader(file);
+      dataScan = new Scanner(in);
+      int count = 0;
+
+      while (true) {
+        try {
+          String line = dataScan.nextLine();
+          String[] data = line.split(",");
+
+          BookBoard bookBoard = new BookBoard();
+          bookBoard.setNo(Integer.parseInt(data[0]));
+          bookBoard.setBookTitle(data[1]);
+          bookBoard.setAuthor(data[2]);
+          bookBoard.setPublisher(data[3]);
+          bookBoard.setCategories(data[4]);
+          bookBoard.setPublishedDate(data[5]);
+          bookBoard.setContent(data[6]);
+          bookBoard.setPhoto(data[7]);
+          bookBoard.setBookStatus(data[8]);
+          bookBoard.setScore(Float.parseFloat(data[9]));
+          bookBoard.setDate(Date.valueOf(data[10]));
+          bookBoard.setViewCount(Integer.parseInt(data[11]));
+
+          bookBoardList.add(bookBoard);
+          count++;
+
+        } catch (Exception e) {
+          break;
+        }
+      }
+      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", count);
+
+    } catch (FileNotFoundException e) {
+      System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
+    } finally {
+      try {
+        dataScan.close();
+      } catch (Exception e) {
+
+      }
+      try {
+        in.close();
+      } catch (Exception e) {
+      }
+    }
+  }
+
+  private static void saveBookBoardData() {
+    File file = new File("./bookBoard.csv");
+    FileWriter out = null;
+
+    try {
+      out = new FileWriter(file);
+      int count = 0;
+
+      for (BookBoard bookBoard : bookBoardList) {
+        String line = String.format("%d,%s,%s,%s,%s,%s,%s,%s,%s,%1.1f,%s,%d", //
+            bookBoard.getNo(), bookBoard.getBookTitle(), bookBoard.getAuthor(),
+            bookBoard.getPublisher(), bookBoard.getCategories(), bookBoard.getPublishedDate(),
+            bookBoard.getContent(), bookBoard.getPhoto(), bookBoard.getBookStatus(),
+            bookBoard.getScore(), bookBoard.getDate(), bookBoard.getViewCount());
+
+        out.write(line);
+        count++;
+      }
+      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", count);
+
+    } catch (Exception e) {
+      System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
+    } finally {
+      try {
+        out.close();
+      } catch (IOException e) {
+
+      }
+    }
+  }
+
+  private static void loadBookBasketData() {
+    File file = new File("./bookBasket.csv");
+
+    FileReader in = null;
+    Scanner dataScan = null;
+
+    try {
+
+      in = new FileReader(file);
+      dataScan = new Scanner(in);
+      int count = 0;
+
+      while (true) {
+        try {
+          String line = dataScan.nextLine();
+          String[] data = line.split(",");
+
+          BookBasket bookBasket = new BookBasket();
+          bookBasket.setNo(Integer.parseInt(data[0]));
+          bookBasket.setBookTitle(data[1]);
+          bookBasket.setAuthor(data[2]);
+          bookBasket.setPublisher(data[3]);
+          bookBasket.setCategories(data[4]);
+          bookBasket.setPublishedDate(data[5]);
+          bookBasket.setMemo(data[6]);
+
+          bookBasketList.add(bookBasket);
+          count++;
+
+        } catch (Exception e) {
+          break;
+        }
+      }
+      System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 로딩했습니다.\n", count);
+    } catch (FileNotFoundException e) {
+      System.out.printf("파일 읽기 중 오류 발생! -" + e.getMessage());
+    } finally {
+      try {
+        dataScan.close();
+      } catch (Exception e) {
+
+      }
+      try {
+        in.close();
+      } catch (Exception e) {
+
+      }
+    }
+  }
+
+  private static void saveBookBasketData() {
+    File file = new File("./bookBasket.csv");
+    FileWriter out = null;
+
+    try {
+      out = new FileWriter(file);
+      int count = 0;
+
+      for (BookBasket bookBasket : bookBasketList) {
+        String line = String.format("%d,%s,%s,%s,%s,%s,%s", //
+            bookBasket.getNo(), bookBasket.getBookTitle(), bookBasket.getAuthor(),
+            bookBasket.getPublisher(), bookBasket.getCategories(), bookBasket.getPublishedDate(),
+            bookBasket.getMemo());
+
+        out.write(line);
+        count++;
+      }
+      System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 저장했습니다.\n", count);
+
+    } catch (IOException e) {
+      System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
+    } finally {
+      try {
+        out.close();
+      } catch (IOException e) {
+
+      }
+    }
+  }
+
+  private static void loadTranscriptionData() {
+    File file = new File("/.transcription.csv");
+
+    FileReader in = null;
+    Scanner dataScan = null;
+
+    try {
+      in = new FileReader(file);
+      dataScan = new Scanner(in);
+      int count = 0;
+
+      while (true) {
+        try {
+          String line = dataScan.nextLine();
+          String[] data = line.split(",");
+
+          TranscriptionBoard transcription = new TranscriptionBoard();
+          transcription.setNo(Integer.parseInt(data[0]));
+          transcription.setTitle(data[1]);
+          transcription.setBookTitle(data[2]);
+          transcription.setAuthor(data[3]);
+          transcription.setPublisher(data[4]);
+          transcription.setContent(data[5]);
+          transcription.setPhoto(data[6]);
+          transcription.setDate(Date.valueOf(data[7]));
+
+          transcriptionBoardList.add(transcription);
+          count++;
+
+        } catch (Exception e) {
+          break;
+        }
+      }
+      System.out.printf("총 %d 개의 필사게시판의 데이터를 로딩했습니다.\n", count);
+    } catch (FileNotFoundException e) {
+
+    }
+  }
+
+  private static void saveTranscriptionData() {
+    File file = new File("/.transcription.csv");
+    FileWriter out = null;
+
+    try {
+      out = new FileWriter(file);
+      int count = 0;
+
+      for (TranscriptionBoard transcription : transcriptionBoardList) {
+        String line = String.format("%d,%s,%s,%s,%s,%s,%s,%s", //
+            transcription.getNo(), transcription.getTitle(), transcription.getBookTitle(),
+            transcription.getAuthor(), transcription.getPublisher(), transcription.getContent(),
+            transcription.getPhoto(), transcription.getDate());
+        out.write(line);
+        count++;
+      }
+      System.out.printf("총 %d 개의 필사게시판의 데이터를 로딩했습니다.\n", count);
+    } catch (IOException e) {
+      System.out.println("파일 쓰기 중 오류 발생! -" + e.getMessage());
+    } finally {
+      try {
+        out.close();
+      } catch (Exception e) {
+      }
+    }
   }
 
 }
