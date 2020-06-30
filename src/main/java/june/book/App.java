@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -159,45 +158,19 @@ public class App {
 
 
   private static void loadMemberData() {
-    // 데이터가 보관된 파일의 정보를 준비한다.
     File file = new File("./member.csv");
 
     FileReader in = null;
     Scanner dataScan = null;
 
     try {
-      // 파일을 읽을 때 사용할 도구를 준비한다.
       in = new FileReader(file);
-
-      // .csv 파일에서 한 줄 단위로 문자열을 읽는 도구가 필요한데
-      // FileReader에는 그런기능이 없다.
-      // 그래서 FileReader를 그대로 사용할 수 없고
-      // 이 객체에 다른 도구를 연결하여 사용할 것이다.
-
       dataScan = new Scanner(in);
       int count = 0;
 
       while (true) {
         try {
-          // 파일에서 한 줄을 읽는다.
-          String line = dataScan.nextLine();
-
-          // 한 줄을 콤마(,)로 나눈다.
-          String[] data = line.split(",");
-
-          // 한 줄에 들어 있는 데이터를 추출하여 Member 객체에 담는다.
-          // => 데이터 순서는 다음과 같다.
-          // 번호, 이름, 이메일, 비밀번호, 사진, 가입날짜
-          Member member = new Member();
-          member.setNo(Integer.parseInt(data[0]));
-          member.setName(data[1]);
-          member.setEmail(data[2]);
-          member.setPassword(data[3]);
-          member.setPhoto(data[4]);
-          member.setRegisteredDate(Date.valueOf(data[5]));
-
-          // member 객체를 Command가 사용하는 목록에 저장한다.
-          memberList.add(member);
+          memberList.add(Member.valueOf(dataScan.nextLine()));
           count++;
 
         } catch (Exception e) {
@@ -230,11 +203,7 @@ public class App {
       int count = 0;
 
       for (Member member : memberList) {
-        String line = String.format("%d,%s,%s,%s,%s,%s\n", //
-            member.getNo(), member.getName(), member.getEmail(), member.getPassword(),
-            member.getPhoto(), member.getRegisteredDate());
-
-        out.write(line);
+        out.write(member.toCsvString() + "\n");
         count++;
       }
       System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", count);
@@ -262,31 +231,14 @@ public class App {
 
       while (true) {
         try {
-          String line = dataScan.nextLine();
-          String[] data = line.split(",");
-
-          BookBoard bookBoard = new BookBoard();
-          bookBoard.setNo(Integer.parseInt(data[0]));
-          bookBoard.setBookTitle(data[1]);
-          bookBoard.setAuthor(data[2]);
-          bookBoard.setPublisher(data[3]);
-          bookBoard.setCategories(data[4]);
-          bookBoard.setPublishedDate(data[5]);
-          bookBoard.setContent(data[6]);
-          bookBoard.setPhoto(data[7]);
-          bookBoard.setBookStatus(data[8]);
-          bookBoard.setScore(Float.parseFloat(data[9]));
-          bookBoard.setDate(Date.valueOf(data[10]));
-          bookBoard.setViewCount(Integer.parseInt(data[11]));
-
-          bookBoardList.add(bookBoard);
+          bookBoardList.add(BookBoard.valueOf(dataScan.nextLine()));
           count++;
 
         } catch (Exception e) {
           break;
         }
       }
-      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", count);
+      System.out.printf("총 %d 개의 도서 데이터를 로딩했습니다.\n", count);
 
     } catch (FileNotFoundException e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
@@ -312,16 +264,10 @@ public class App {
       int count = 0;
 
       for (BookBoard bookBoard : bookBoardList) {
-        String line = String.format("%d,%s,%s,%s,%s,%s,%s,%s,%s,%1.1f,%s,%d", //
-            bookBoard.getNo(), bookBoard.getBookTitle(), bookBoard.getAuthor(),
-            bookBoard.getPublisher(), bookBoard.getCategories(), bookBoard.getPublishedDate(),
-            bookBoard.getContent(), bookBoard.getPhoto(), bookBoard.getBookStatus(),
-            bookBoard.getScore(), bookBoard.getDate(), bookBoard.getViewCount());
-
-        out.write(line);
+        out.write(bookBoard.toStringCsv() + "\n");
         count++;
       }
-      System.out.printf("총 %d 개의 게시물 데이터를 저장했습니다.\n", count);
+      System.out.printf("총 %d 개의 도서 데이터를 저장했습니다.\n", count);
 
     } catch (Exception e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
@@ -348,19 +294,7 @@ public class App {
 
       while (true) {
         try {
-          String line = dataScan.nextLine();
-          String[] data = line.split(",");
-
-          BookBasket bookBasket = new BookBasket();
-          bookBasket.setNo(Integer.parseInt(data[0]));
-          bookBasket.setBookTitle(data[1]);
-          bookBasket.setAuthor(data[2]);
-          bookBasket.setPublisher(data[3]);
-          bookBasket.setCategories(data[4]);
-          bookBasket.setPublishedDate(data[5]);
-          bookBasket.setMemo(data[6]);
-
-          bookBasketList.add(bookBasket);
+          bookBasketList.add(BookBasket.valueOf(dataScan.nextLine()));
           count++;
 
         } catch (Exception e) {
@@ -393,12 +327,7 @@ public class App {
       int count = 0;
 
       for (BookBasket bookBasket : bookBasketList) {
-        String line = String.format("%d,%s,%s,%s,%s,%s,%s", //
-            bookBasket.getNo(), bookBasket.getBookTitle(), bookBasket.getAuthor(),
-            bookBasket.getPublisher(), bookBasket.getCategories(), bookBasket.getPublishedDate(),
-            bookBasket.getMemo());
-
-        out.write(line);
+        out.write(bookBasket.toStringCsv() + "\n");
         count++;
       }
       System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 저장했습니다.\n", count);
@@ -427,20 +356,7 @@ public class App {
 
       while (true) {
         try {
-          String line = dataScan.nextLine();
-          String[] data = line.split(",");
-
-          TranscriptionBoard transcription = new TranscriptionBoard();
-          transcription.setNo(Integer.parseInt(data[0]));
-          transcription.setTitle(data[1]);
-          transcription.setBookTitle(data[2]);
-          transcription.setAuthor(data[3]);
-          transcription.setPublisher(data[4]);
-          transcription.setContent(data[5]);
-          transcription.setPhoto(data[6]);
-          transcription.setDate(Date.valueOf(data[7]));
-
-          transcriptionBoardList.add(transcription);
+          transcriptionBoardList.add(TranscriptionBoard.valueOf(dataScan.nextLine()));
           count++;
 
         } catch (Exception e) {
@@ -462,11 +378,7 @@ public class App {
       int count = 0;
 
       for (TranscriptionBoard transcription : transcriptionBoardList) {
-        String line = String.format("%d,%s,%s,%s,%s,%s,%s,%s", //
-            transcription.getNo(), transcription.getTitle(), transcription.getBookTitle(),
-            transcription.getAuthor(), transcription.getPublisher(), transcription.getContent(),
-            transcription.getPhoto(), transcription.getDate());
-        out.write(line);
+        out.write(transcription.toCsvString() + "\n");
         count++;
       }
       System.out.printf("총 %d 개의 필사게시판의 데이터를 저장했습니다.\n", count);

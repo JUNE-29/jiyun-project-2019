@@ -17,6 +17,32 @@ public class BookBoard {
   private Date date;
   private int viewCount;
 
+  public static BookBoard valueOf(String csv) {
+    String[] data = csv.split(",");
+
+    BookBoard bookBoard = new BookBoard();
+    bookBoard.setNo(Integer.parseInt(data[0]));
+    bookBoard.setBookTitle(data[1]);
+    bookBoard.setAuthor(data[2]);
+    bookBoard.setPublisher(data[3]);
+    bookBoard.setCategories(data[4]);
+    bookBoard.setPublishedDate(data[5]);
+    bookBoard.setContent(data[6]);
+    bookBoard.setPhoto(data[7]);
+    bookBoard.setBookStatus(data[8]);
+    bookBoard.setScore(Float.parseFloat(data[9]));
+    bookBoard.setDate(Date.valueOf(data[10]));
+    bookBoard.setViewCount(Integer.parseInt(data[11]));
+
+    return bookBoard;
+  }
+
+  public String toStringCsv() {
+    return String.format("%d,%s,%s,%s,%s,%s,%s,%s,%s,%1.1f,%s,%d", //
+        this.getNo(), this.getBookTitle(), this.getAuthor(), this.getPublisher(),
+        this.getCategories(), this.getPublishedDate(), this.getContent(), this.getPhoto(),
+        this.getBookStatus(), this.getScore(), this.getDate(), this.getViewCount());
+  }
 
 
   @Override

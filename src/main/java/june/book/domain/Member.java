@@ -11,6 +11,27 @@ public class Member {
   private String photo;
   private Date registeredDate;
 
+  public static Member valueOf(String csv) {
+    String[] data = csv.split(",");
+
+    Member member = new Member();
+    member.setNo(Integer.parseInt(data[0]));
+    member.setName(data[1]);
+    member.setEmail(data[2]);
+    member.setPassword(data[3]);
+    member.setPhoto(data[4]);
+    member.setRegisteredDate(Date.valueOf(data[5]));
+
+    return member;
+  }
+
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%s,%s,%s", //
+        this.getNo(), this.getName(), this.getEmail(), this.getPassword(), this.getPhoto(),
+        this.getRegisteredDate());
+  }
+
+
   @Override
   public int hashCode() {
     final int prime = 31;

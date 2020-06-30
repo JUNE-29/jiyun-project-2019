@@ -10,6 +10,26 @@ public class BookBasket {
   private String publishedDate;
   private String memo;
 
+  public static BookBasket valueOf(String csv) {
+    String[] data = csv.split(",");
+
+    BookBasket bookBasket = new BookBasket();
+    bookBasket.setNo(Integer.parseInt(data[0]));
+    bookBasket.setBookTitle(data[1]);
+    bookBasket.setAuthor(data[2]);
+    bookBasket.setPublisher(data[3]);
+    bookBasket.setCategories(data[4]);
+    bookBasket.setPublishedDate(data[5]);
+    bookBasket.setMemo(data[6]);
+
+    return bookBasket;
+  }
+
+  public String toStringCsv() {
+    return String.format("%d,%s,%s,%s,%s,%s,%s", //
+        this.getNo(), this.getBookTitle(), this.getAuthor(), this.getPublisher(),
+        this.getCategories(), this.getPublishedDate(), this.getMemo());
+  }
 
   public int getNo() {
     return no;

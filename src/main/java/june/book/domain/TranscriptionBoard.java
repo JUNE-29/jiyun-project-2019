@@ -13,6 +13,28 @@ public class TranscriptionBoard {
   private String photo;
   private Date date;
 
+  public static TranscriptionBoard valueOf(String csv) {
+    String[] data = csv.split(",");
+
+    TranscriptionBoard transcription = new TranscriptionBoard();
+    transcription.setNo(Integer.parseInt(data[0]));
+    transcription.setTitle(data[1]);
+    transcription.setBookTitle(data[2]);
+    transcription.setAuthor(data[3]);
+    transcription.setPublisher(data[4]);
+    transcription.setContent(data[5]);
+    transcription.setPhoto(data[6]);
+    transcription.setDate(Date.valueOf(data[7]));
+    return transcription;
+  }
+
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%s,%s,%s,%s,%s", this.getNo(), this.getTitle(),
+        this.getBookTitle(), this.getAuthor(), this.getPublisher(), this.getContent(),
+        this.getPhoto(), this.getDate());
+  }
+
+
   public int getNo() {
     return no;
   }
