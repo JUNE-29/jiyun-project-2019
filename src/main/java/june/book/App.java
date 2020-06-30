@@ -180,10 +180,10 @@ public class App {
       while (true) {
         try {
           // 파일에서 한 줄을 읽는다.
-          String Line = dataScan.nextLine();
+          String line = dataScan.nextLine();
 
           // 한 줄을 콤마(,)로 나눈다.
-          String[] data = Line.split(",");
+          String[] data = line.split(",");
 
           // 한 줄에 들어 있는 데이터를 추출하여 Member 객체에 담는다.
           // => 데이터 순서는 다음과 같다.
@@ -194,7 +194,7 @@ public class App {
           member.setEmail(data[2]);
           member.setPassword(data[3]);
           member.setPhoto(data[4]);
-          member.setRegisteredDate(Date.valueOf(data[6]));
+          member.setRegisteredDate(Date.valueOf(data[5]));
 
           // member 객체를 Command가 사용하는 목록에 저장한다.
           memberList.add(member);
@@ -321,7 +321,7 @@ public class App {
         out.write(line);
         count++;
       }
-      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", count);
+      System.out.printf("총 %d 개의 게시물 데이터를 저장했습니다.\n", count);
 
     } catch (Exception e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
@@ -415,7 +415,7 @@ public class App {
   }
 
   private static void loadTranscriptionData() {
-    File file = new File("/.transcription.csv");
+    File file = new File("./transcription.csv");
 
     FileReader in = null;
     Scanner dataScan = null;
@@ -454,7 +454,7 @@ public class App {
   }
 
   private static void saveTranscriptionData() {
-    File file = new File("/.transcription.csv");
+    File file = new File("./transcription.csv");
     FileWriter out = null;
 
     try {
@@ -469,7 +469,7 @@ public class App {
         out.write(line);
         count++;
       }
-      System.out.printf("총 %d 개의 필사게시판의 데이터를 로딩했습니다.\n", count);
+      System.out.printf("총 %d 개의 필사게시판의 데이터를 저장했습니다.\n", count);
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! -" + e.getMessage());
     } finally {
