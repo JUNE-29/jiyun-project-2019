@@ -1,5 +1,7 @@
 package june.book;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -162,7 +164,7 @@ public class App {
     File file = new File("./member.json");
 
 
-    try (FileReader in = new FileReader(file)) {
+    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
       memberList.addAll(Arrays.asList(new Gson().fromJson(in, Member[].class)));
       System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", memberList.size());
 
@@ -174,7 +176,7 @@ public class App {
   private static void saveMemberData() {
     File file = new File("./member.json");
 
-    try (FileWriter out = new FileWriter(file);) {
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
       out.write(new Gson().toJson(memberList));
       System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", memberList.size());
 
@@ -186,7 +188,7 @@ public class App {
   private static void loadBookBoardData() {
     File file = new File("./bookBoard.json");
 
-    try (FileReader in = new FileReader(file)) {
+    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
       bookBoardList.addAll(Arrays.asList(new Gson().fromJson(in, BookBoard[].class)));
       System.out.printf("총 %d 개의 도서 데이터를 로딩했습니다.\n", bookBoardList.size());
 
@@ -198,7 +200,7 @@ public class App {
   private static void saveBookBoardData() {
     File file = new File("./bookBoard.json");
 
-    try (FileWriter out = new FileWriter(file);) {
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
       out.write(new Gson().toJson(bookBoardList));
       System.out.printf("총 %d 개의 도서 데이터를 저장했습니다.\n", bookBoardList.size());
 
@@ -210,7 +212,7 @@ public class App {
   private static void loadBookBasketData() {
     File file = new File("./bookBasket.json");
 
-    try (FileReader in = new FileReader(file);) {
+    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
       bookBasketList.addAll(Arrays.asList(new Gson().fromJson(in, BookBasket[].class)));
       System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 로딩했습니다.\n", bookBasketList.size());
     } catch (IOException e) {
@@ -221,7 +223,7 @@ public class App {
   private static void saveBookBasketData() {
     File file = new File("./bookBasket.json");
 
-    try (FileWriter out = new FileWriter(file);) {
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
       out.write(new Gson().toJson(bookBoardList));
       System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 저장했습니다.\n", bookBoardList.size());
 
@@ -233,7 +235,7 @@ public class App {
   private static void loadTranscriptionData() {
     File file = new File("./transcription.json");
 
-    try (FileReader in = new FileReader(file)) {
+    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
       transcriptionBoardList
           .addAll(Arrays.asList(new Gson().fromJson(in, TranscriptionBoard[].class)));
       System.out.printf("총 %d 개의 필사게시판의 데이터를 로딩했습니다.\n", transcriptionBoardList.size());
@@ -244,7 +246,7 @@ public class App {
 
   private static void saveTranscriptionData() {
     File file = new File("./transcription.json");
-    try (FileWriter out = new FileWriter(file)) {
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
       out.write(new Gson().toJson(transcriptionBoardList));
       System.out.printf("총 %d 개의 필사게시판의 데이터를 저장했습니다.\n", transcriptionBoardList.size());
     } catch (IOException e) {
