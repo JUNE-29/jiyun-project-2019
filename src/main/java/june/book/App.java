@@ -1,21 +1,22 @@
 package june.book;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
-import com.google.gson.Gson;
 import june.book.domain.BookBasket;
 import june.book.domain.BookBoard;
 import june.book.domain.Member;
@@ -161,11 +162,21 @@ public class App {
 
 
   private static void loadMemberData() {
-    File file = new File("./member.json");
+    File file = new File("./member.data");
 
-
-    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
-      memberList.addAll(Arrays.asList(new Gson().fromJson(in, Member[].class)));
+    try (DataInputStream in =
+        new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      int size = in.readInt();
+      for (int i = 0; i < size; i++) {
+        Member member = new Member();
+        member.setNo(in.readInt());
+        member.setName(in.readUTF());
+        member.setEmail(in.readUTF());
+        member.setPassword(in.readUTF());
+        member.setPhoto(in.readUTF());
+        member.setRegisteredDate(Date.valueOf(in.readUTF()));
+        memberList.add(member);
+      }
       System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", memberList.size());
 
     } catch (IOException e) {
@@ -174,10 +185,19 @@ public class App {
   }
 
   private static void saveMemberData() {
-    File file = new File("./member.json");
+    File file = new File("./member.data");
 
-    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
-      out.write(new Gson().toJson(memberList));
+    try (DataOutputStream out =
+        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeInt(memberList.size());
+      for (Member member : memberList) {
+        out.writeInt(member.getNo());
+        out.writeUTF(member.getName());
+        out.writeUTF(member.getEmail());
+        out.writeUTF(member.getPassword());
+        out.writeUTF(member.getPhoto());
+        out.writeUTF(member.getRegisteredDate().toString());
+      }
       System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", memberList.size());
 
     } catch (IOException e) {
@@ -186,10 +206,28 @@ public class App {
   }
 
   private static void loadBookBoardData() {
-    File file = new File("./bookBoard.json");
+    File file = new File("./bookBoard.data");
 
-    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
-      bookBoardList.addAll(Arrays.asList(new Gson().fromJson(in, BookBoard[].class)));
+    try (DataInputStream in =
+        new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      int size = in.readInt();
+      for (int i = 0; i < size; i++) {
+        BookBoard bookBoard = new BookBoard();
+        bookBoard.setNo(in.readInt());
+        bookBoard.setBookTitle(in.readUTF());
+        bookBoard.setAuthor(in.readUTF());
+        bookBoard.setPublisher(in.readUTF());
+        bookBoard.setCategories(in.readUTF());
+        bookBoard.setPublishedDate(in.readUTF());
+        bookBoard.setContent(in.readUTF());
+        bookBoard.setPhoto(in.readUTF());
+        bookBoard.setBookStatus(in.readUTF());
+        bookBoard.setScore(in.readFloat());
+        bookBoard.setDate(Date.valueOf(in.readUTF()));
+        bookBoard.setViewCount(in.readInt());
+        bookBoardList.add(bookBoard);
+      }
+
       System.out.printf("총 %d 개의 도서 데이터를 로딩했습니다.\n", bookBoardList.size());
 
     } catch (IOException e) {
@@ -198,56 +236,116 @@ public class App {
   }
 
   private static void saveBookBoardData() {
-    File file = new File("./bookBoard.json");
+    File file = new File("./bookBoard.data");
 
-    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
-      out.write(new Gson().toJson(bookBoardList));
+    try (DataOutputStream out =
+        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeInt(bookBoardList.size());
+      for (BookBoard bookBoard : bookBoardList) {
+        out.writeInt(bookBoard.getNo());
+        out.writeUTF(bookBoard.getBookTitle());
+        out.writeUTF(bookBoard.getAuthor());
+        out.writeUTF(bookBoard.getPublisher());
+        out.writeUTF(bookBoard.getCategories());
+        out.writeUTF(bookBoard.getPublishedDate());
+        out.writeUTF(bookBoard.getContent());
+        out.writeUTF(bookBoard.getPhoto());
+        out.writeUTF(bookBoard.getBookStatus());
+        out.writeFloat(bookBoard.getScore());
+        out.writeUTF(bookBoard.getDate().toString());
+        out.writeInt(bookBoard.getViewCount());
+      }
       System.out.printf("총 %d 개의 도서 데이터를 저장했습니다.\n", bookBoardList.size());
-
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
     }
   }
 
   private static void loadBookBasketData() {
-    File file = new File("./bookBasket.json");
+    File file = new File("./bookBasket.data");
 
-    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
-      bookBasketList.addAll(Arrays.asList(new Gson().fromJson(in, BookBasket[].class)));
+    try (DataInputStream in =
+        new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+
+      int size = in.readInt();
+      for (int i = 0; i < size; i++) {
+        BookBasket bookBasket = new BookBasket();
+        bookBasket.setNo(in.readInt());
+        bookBasket.setBookTitle(in.readUTF());
+        bookBasket.setAuthor(in.readUTF());
+        bookBasket.setPublisher(in.readUTF());
+        bookBasket.setCategories(in.readUTF());
+        bookBasket.setPublishedDate(in.readUTF());
+        bookBasket.setMemo(in.readUTF());
+        bookBasketList.add(bookBasket);
+      }
+
       System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 로딩했습니다.\n", bookBasketList.size());
     } catch (IOException e) {
-      System.out.printf("파일 읽기 중 오류 발생! -" + e.getMessage());
+      System.out.println("파일 읽기 중 오류 발생! -" + e.getMessage());
     }
   }
 
   private static void saveBookBasketData() {
-    File file = new File("./bookBasket.json");
+    File file = new File("./bookBasket.data");
 
-    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
-      out.write(new Gson().toJson(bookBoardList));
-      System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 저장했습니다.\n", bookBoardList.size());
-
+    try (DataOutputStream out =
+        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeInt(bookBasketList.size());
+      for (BookBasket bookBasket : bookBasketList) {
+        out.writeInt(bookBasket.getNo());
+        out.writeUTF(bookBasket.getBookTitle());
+        out.writeUTF(bookBasket.getAuthor());
+        out.writeUTF(bookBasket.getPublisher());
+        out.writeUTF(bookBasket.getCategories());
+        out.writeUTF(bookBasket.getPublishedDate());
+        out.writeUTF(bookBasket.getMemo());
+      }
+      System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 저장했습니다.\n", bookBasketList.size());
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
     }
   }
 
   private static void loadTranscriptionData() {
-    File file = new File("./transcription.json");
+    File file = new File("./transcription.data");
 
-    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
-      transcriptionBoardList
-          .addAll(Arrays.asList(new Gson().fromJson(in, TranscriptionBoard[].class)));
+    try (DataInputStream in =
+        new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      int size = in.readInt();
+      for (int i = 0; i < size; i++) {
+        TranscriptionBoard transcription = new TranscriptionBoard();
+        transcription.setNo(in.readInt());
+        transcription.setTitle(in.readUTF());
+        transcription.setBookTitle(in.readUTF());
+        transcription.setAuthor(in.readUTF());
+        transcription.setPublisher(in.readUTF());
+        transcription.setContent(in.readUTF());
+        transcription.setPhoto(in.readUTF());
+        transcription.setDate(Date.valueOf(in.readUTF()));
+        transcriptionBoardList.add(transcription);
+      }
       System.out.printf("총 %d 개의 필사게시판의 데이터를 로딩했습니다.\n", transcriptionBoardList.size());
     } catch (IOException e) {
-      System.out.printf("파일 읽기 중 오류 발생! -" + e.getMessage());
+      System.out.println("파일 읽기 중 오류 발생! -" + e.getMessage());
     }
   }
 
   private static void saveTranscriptionData() {
-    File file = new File("./transcription.json");
-    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
-      out.write(new Gson().toJson(transcriptionBoardList));
+    File file = new File("./transcription.data");
+    try (DataOutputStream out =
+        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeInt(transcriptionBoardList.size());
+      for (TranscriptionBoard transcription : transcriptionBoardList) {
+        out.writeInt(transcription.getNo());
+        out.writeUTF(transcription.getTitle());
+        out.writeUTF(transcription.getBookTitle());
+        out.writeUTF(transcription.getAuthor());
+        out.writeUTF(transcription.getPublisher());
+        out.writeUTF(transcription.getContent());
+        out.writeUTF(transcription.getPhoto());
+        out.writeUTF(transcription.getDate().toString());
+      }
       System.out.printf("총 %d 개의 필사게시판의 데이터를 저장했습니다.\n", transcriptionBoardList.size());
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! -" + e.getMessage());
