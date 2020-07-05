@@ -1,8 +1,11 @@
 package june.book.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class TranscriptionBoard {
+public class TranscriptionBoard implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private int no;
   private String title;

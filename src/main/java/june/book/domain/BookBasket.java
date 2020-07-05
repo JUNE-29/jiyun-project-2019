@@ -1,6 +1,10 @@
 package june.book.domain;
 
-public class BookBasket {
+import java.io.Serializable;
+
+public class BookBasket implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private int no;
   private String bookTitle;

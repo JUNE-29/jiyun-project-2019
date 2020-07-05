@@ -2,13 +2,12 @@ package june.book;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Date;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -161,43 +160,26 @@ public class App {
   }
 
 
+  @SuppressWarnings("unchecked")
   private static void loadMemberData() {
-    File file = new File("./member.data");
+    File file = new File("./member.ser2");
 
-    try (DataInputStream in =
-        new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      int size = in.readInt();
-      for (int i = 0; i < size; i++) {
-        Member member = new Member();
-        member.setNo(in.readInt());
-        member.setName(in.readUTF());
-        member.setEmail(in.readUTF());
-        member.setPassword(in.readUTF());
-        member.setPhoto(in.readUTF());
-        member.setRegisteredDate(Date.valueOf(in.readUTF()));
-        memberList.add(member);
-      }
+    try (ObjectInputStream in =
+        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      memberList = (LinkedList<Member>) in.readObject();
       System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", memberList.size());
 
-    } catch (IOException e) {
+    } catch (Exception e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
     }
   }
 
   private static void saveMemberData() {
-    File file = new File("./member.data");
+    File file = new File("./member.ser2");
 
-    try (DataOutputStream out =
-        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeInt(memberList.size());
-      for (Member member : memberList) {
-        out.writeInt(member.getNo());
-        out.writeUTF(member.getName());
-        out.writeUTF(member.getEmail());
-        out.writeUTF(member.getPassword());
-        out.writeUTF(member.getPhoto());
-        out.writeUTF(member.getRegisteredDate().toString());
-      }
+    try (ObjectOutputStream out =
+        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeObject(memberList);
       System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", memberList.size());
 
     } catch (IOException e) {
@@ -205,147 +187,80 @@ public class App {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private static void loadBookBoardData() {
-    File file = new File("./bookBoard.data");
+    File file = new File("./bookBoard.ser2");
 
-    try (DataInputStream in =
-        new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      int size = in.readInt();
-      for (int i = 0; i < size; i++) {
-        BookBoard bookBoard = new BookBoard();
-        bookBoard.setNo(in.readInt());
-        bookBoard.setBookTitle(in.readUTF());
-        bookBoard.setAuthor(in.readUTF());
-        bookBoard.setPublisher(in.readUTF());
-        bookBoard.setCategories(in.readUTF());
-        bookBoard.setPublishedDate(in.readUTF());
-        bookBoard.setContent(in.readUTF());
-        bookBoard.setPhoto(in.readUTF());
-        bookBoard.setBookStatus(in.readUTF());
-        bookBoard.setScore(in.readFloat());
-        bookBoard.setDate(Date.valueOf(in.readUTF()));
-        bookBoard.setViewCount(in.readInt());
-        bookBoardList.add(bookBoard);
-      }
+    try (ObjectInputStream in =
+        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      bookBoardList = (ArrayList<BookBoard>) in.readObject();
 
       System.out.printf("총 %d 개의 도서 데이터를 로딩했습니다.\n", bookBoardList.size());
 
-    } catch (IOException e) {
+    } catch (Exception e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
     }
   }
 
   private static void saveBookBoardData() {
-    File file = new File("./bookBoard.data");
+    File file = new File("./bookBoard.ser2");
 
-    try (DataOutputStream out =
-        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeInt(bookBoardList.size());
-      for (BookBoard bookBoard : bookBoardList) {
-        out.writeInt(bookBoard.getNo());
-        out.writeUTF(bookBoard.getBookTitle());
-        out.writeUTF(bookBoard.getAuthor());
-        out.writeUTF(bookBoard.getPublisher());
-        out.writeUTF(bookBoard.getCategories());
-        out.writeUTF(bookBoard.getPublishedDate());
-        out.writeUTF(bookBoard.getContent());
-        out.writeUTF(bookBoard.getPhoto());
-        out.writeUTF(bookBoard.getBookStatus());
-        out.writeFloat(bookBoard.getScore());
-        out.writeUTF(bookBoard.getDate().toString());
-        out.writeInt(bookBoard.getViewCount());
-      }
+    try (ObjectOutputStream out =
+        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeObject(bookBoardList);
+
       System.out.printf("총 %d 개의 도서 데이터를 저장했습니다.\n", bookBoardList.size());
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
     }
   }
 
+  @SuppressWarnings("unchecked")
   private static void loadBookBasketData() {
-    File file = new File("./bookBasket.data");
+    File file = new File("./bookBasket.ser2");
 
-    try (DataInputStream in =
-        new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-
-      int size = in.readInt();
-      for (int i = 0; i < size; i++) {
-        BookBasket bookBasket = new BookBasket();
-        bookBasket.setNo(in.readInt());
-        bookBasket.setBookTitle(in.readUTF());
-        bookBasket.setAuthor(in.readUTF());
-        bookBasket.setPublisher(in.readUTF());
-        bookBasket.setCategories(in.readUTF());
-        bookBasket.setPublishedDate(in.readUTF());
-        bookBasket.setMemo(in.readUTF());
-        bookBasketList.add(bookBasket);
-      }
+    try (ObjectInputStream in =
+        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      bookBasketList = (ArrayList<BookBasket>) in.readObject();
 
       System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 로딩했습니다.\n", bookBasketList.size());
-    } catch (IOException e) {
+    } catch (Exception e) {
       System.out.println("파일 읽기 중 오류 발생! -" + e.getMessage());
     }
   }
 
   private static void saveBookBasketData() {
-    File file = new File("./bookBasket.data");
+    File file = new File("./bookBasket.ser2");
 
-    try (DataOutputStream out =
-        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeInt(bookBasketList.size());
-      for (BookBasket bookBasket : bookBasketList) {
-        out.writeInt(bookBasket.getNo());
-        out.writeUTF(bookBasket.getBookTitle());
-        out.writeUTF(bookBasket.getAuthor());
-        out.writeUTF(bookBasket.getPublisher());
-        out.writeUTF(bookBasket.getCategories());
-        out.writeUTF(bookBasket.getPublishedDate());
-        out.writeUTF(bookBasket.getMemo());
-      }
+    try (ObjectOutputStream out =
+        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeObject(bookBasketList);
       System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 저장했습니다.\n", bookBasketList.size());
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
     }
   }
 
+  @SuppressWarnings("unchecked")
   private static void loadTranscriptionData() {
-    File file = new File("./transcription.data");
+    File file = new File("./transcription.ser2");
 
-    try (DataInputStream in =
-        new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      int size = in.readInt();
-      for (int i = 0; i < size; i++) {
-        TranscriptionBoard transcription = new TranscriptionBoard();
-        transcription.setNo(in.readInt());
-        transcription.setTitle(in.readUTF());
-        transcription.setBookTitle(in.readUTF());
-        transcription.setAuthor(in.readUTF());
-        transcription.setPublisher(in.readUTF());
-        transcription.setContent(in.readUTF());
-        transcription.setPhoto(in.readUTF());
-        transcription.setDate(Date.valueOf(in.readUTF()));
-        transcriptionBoardList.add(transcription);
-      }
+    try (ObjectInputStream in =
+        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      transcriptionBoardList = (ArrayList<TranscriptionBoard>) in.readObject();
+
       System.out.printf("총 %d 개의 필사게시판의 데이터를 로딩했습니다.\n", transcriptionBoardList.size());
-    } catch (IOException e) {
+    } catch (Exception e) {
       System.out.println("파일 읽기 중 오류 발생! -" + e.getMessage());
     }
   }
 
   private static void saveTranscriptionData() {
-    File file = new File("./transcription.data");
-    try (DataOutputStream out =
-        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeInt(transcriptionBoardList.size());
-      for (TranscriptionBoard transcription : transcriptionBoardList) {
-        out.writeInt(transcription.getNo());
-        out.writeUTF(transcription.getTitle());
-        out.writeUTF(transcription.getBookTitle());
-        out.writeUTF(transcription.getAuthor());
-        out.writeUTF(transcription.getPublisher());
-        out.writeUTF(transcription.getContent());
-        out.writeUTF(transcription.getPhoto());
-        out.writeUTF(transcription.getDate().toString());
-      }
+    File file = new File("./transcription.ser2");
+    try (ObjectOutputStream out =
+        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeObject(transcriptionBoardList);
+
       System.out.printf("총 %d 개의 필사게시판의 데이터를 저장했습니다.\n", transcriptionBoardList.size());
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! -" + e.getMessage());
