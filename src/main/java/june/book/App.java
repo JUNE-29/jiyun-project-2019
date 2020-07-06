@@ -55,7 +55,7 @@ public class App {
   static ArrayList<BookBasket> bookBasketList = new ArrayList<>();
   static LinkedList<Member> memberList = new LinkedList<>();
 
-  public static void main(String[] args) {
+  public void service() {
 
     loadMemberData();
     loadBookBoardData();
@@ -140,7 +140,7 @@ public class App {
     saveTranscriptionData();
 
 
-  } // main()
+  } // service()
 
 
   private static void printCommandHistory(Iterator<String> iterator) {
@@ -265,5 +265,10 @@ public class App {
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! -" + e.getMessage());
     }
+  }
+
+  public static void main(String[] args) {
+    App app = new App();
+    app.service();
   }
 }
