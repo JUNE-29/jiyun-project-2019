@@ -12,10 +12,14 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
+import june.book.context.ApplicationContextListener;
 import june.book.domain.BookBasket;
 import june.book.domain.BookBoard;
 import june.book.domain.Member;
@@ -45,17 +49,46 @@ import june.util.Prompt;
 
 public class App {
 
-  static Scanner keyboard = new Scanner(System.in);
+  Scanner keyboard = new Scanner(System.in);
 
-  static Deque<String> commandStack = new ArrayDeque<>();
-  static Queue<String> commandQueue = new LinkedList<>();
+  Deque<String> commandStack = new ArrayDeque<>();
+  Queue<String> commandQueue = new LinkedList<>();
 
-  static ArrayList<BookBoard> bookBoardList = new ArrayList<>();
-  static ArrayList<TranscriptionBoard> transcriptionBoardList = new ArrayList<>();
-  static ArrayList<BookBasket> bookBasketList = new ArrayList<>();
-  static LinkedList<Member> memberList = new LinkedList<>();
+  List<BookBoard> bookBoardList = new ArrayList<>();
+  List<TranscriptionBoard> transcriptionBoardList = new ArrayList<>();
+  List<BookBasket> bookBasketList = new ArrayList<>();
+  List<Member> memberList = new LinkedList<>();
+
+  // 옵저버 목록을 관리할 객체 준비
+  Set<ApplicationContextListener> listeners = new HashSet<>();
+
+  // 옵저버를 등록하는 메서드이다.
+  public void addApplicationContextListener(ApplicationContextListener listener) {
+    listeners.add(listener);
+  }
+
+  // 옵저버를 제거하는 메서드이다.
+  public void removeApplicationContextListener(ApplicationContextListener listener) {
+    listeners.remove(listener);
+  }
+
+  // 애플리케이션이 시작되면, 등록된 리스너에게 알린다.
+  private void notifyApplicationInitialized() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextInitialized();
+    }
+  }
+
+  // 애플리케이션이 종료되면, 등록된 리스너에게 알린다.
+  private void notifyApplicationDestroyed() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextDestroyed();
+    }
+  }
 
   public void service() {
+
+    notifyApplicationInitialized();
 
     loadMemberData();
     loadBookBoardData();
@@ -139,11 +172,12 @@ public class App {
     saveBookBasketData();
     saveTranscriptionData();
 
+    notifyApplicationDestroyed();
 
   } // service()
 
 
-  private static void printCommandHistory(Iterator<String> iterator) {
+  private void printCommandHistory(Iterator<String> iterator) {
     int count = 0;
     while (iterator.hasNext()) {
       System.out.println(iterator.next());
@@ -161,12 +195,12 @@ public class App {
 
 
   @SuppressWarnings("unchecked")
-  private static void loadMemberData() {
+  private void loadMemberData() {
     File file = new File("./member.ser2");
 
     try (ObjectInputStream in =
         new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      memberList = (LinkedList<Member>) in.readObject();
+      memberList = (List<Member>) in.readObject();
       System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", memberList.size());
 
     } catch (Exception e) {
@@ -174,7 +208,7 @@ public class App {
     }
   }
 
-  private static void saveMemberData() {
+  private void saveMemberData() {
     File file = new File("./member.ser2");
 
     try (ObjectOutputStream out =
@@ -188,12 +222,12 @@ public class App {
   }
 
   @SuppressWarnings("unchecked")
-  private static void loadBookBoardData() {
+  private void loadBookBoardData() {
     File file = new File("./bookBoard.ser2");
 
     try (ObjectInputStream in =
         new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      bookBoardList = (ArrayList<BookBoard>) in.readObject();
+      bookBoardList = (List<BookBoard>) in.readObject();
 
       System.out.printf("총 %d 개의 도서 데이터를 로딩했습니다.\n", bookBoardList.size());
 
@@ -202,7 +236,7 @@ public class App {
     }
   }
 
-  private static void saveBookBoardData() {
+  private void saveBookBoardData() {
     File file = new File("./bookBoard.ser2");
 
     try (ObjectOutputStream out =
@@ -216,12 +250,12 @@ public class App {
   }
 
   @SuppressWarnings("unchecked")
-  private static void loadBookBasketData() {
+  private void loadBookBasketData() {
     File file = new File("./bookBasket.ser2");
 
     try (ObjectInputStream in =
         new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      bookBasketList = (ArrayList<BookBasket>) in.readObject();
+      bookBasketList = (List<BookBasket>) in.readObject();
 
       System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 로딩했습니다.\n", bookBasketList.size());
     } catch (Exception e) {
@@ -229,7 +263,7 @@ public class App {
     }
   }
 
-  private static void saveBookBasketData() {
+  private void saveBookBasketData() {
     File file = new File("./bookBasket.ser2");
 
     try (ObjectOutputStream out =
@@ -242,12 +276,12 @@ public class App {
   }
 
   @SuppressWarnings("unchecked")
-  private static void loadTranscriptionData() {
+  private void loadTranscriptionData() {
     File file = new File("./transcription.ser2");
 
     try (ObjectInputStream in =
         new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      transcriptionBoardList = (ArrayList<TranscriptionBoard>) in.readObject();
+      transcriptionBoardList = (List<TranscriptionBoard>) in.readObject();
 
       System.out.printf("총 %d 개의 필사게시판의 데이터를 로딩했습니다.\n", transcriptionBoardList.size());
     } catch (Exception e) {
@@ -255,7 +289,7 @@ public class App {
     }
   }
 
-  private static void saveTranscriptionData() {
+  private void saveTranscriptionData() {
     File file = new File("./transcription.ser2");
     try (ObjectOutputStream out =
         new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
