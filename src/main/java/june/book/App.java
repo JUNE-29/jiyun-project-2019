@@ -1,21 +1,13 @@
 package june.book;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
@@ -54,13 +46,10 @@ public class App {
   Deque<String> commandStack = new ArrayDeque<>();
   Queue<String> commandQueue = new LinkedList<>();
 
-  List<BookBoard> bookBoardList = new ArrayList<>();
-  List<TranscriptionBoard> transcriptionBoardList = new ArrayList<>();
-  List<BookBasket> bookBasketList = new ArrayList<>();
-  List<Member> memberList = new LinkedList<>();
-
   // 옵저버 목록을 관리할 객체 준비
   Set<ApplicationContextListener> listeners = new HashSet<>();
+
+  Map<String, Object> context = new HashMap<>();
 
   // 옵저버를 등록하는 메서드이다.
   public void addApplicationContextListener(ApplicationContextListener listener) {
@@ -75,25 +64,27 @@ public class App {
   // 애플리케이션이 시작되면, 등록된 리스너에게 알린다.
   private void notifyApplicationInitialized() {
     for (ApplicationContextListener listener : listeners) {
-      listener.contextInitialized();
+      listener.contextInitialized(context);
     }
   }
 
   // 애플리케이션이 종료되면, 등록된 리스너에게 알린다.
   private void notifyApplicationDestroyed() {
     for (ApplicationContextListener listener : listeners) {
-      listener.contextDestroyed();
+      listener.contextDestroyed(context);
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void service() {
 
     notifyApplicationInitialized();
 
-    loadMemberData();
-    loadBookBoardData();
-    loadBookBasketData();
-    loadTranscriptionData();
+    List<BookBoard> bookBoardList = (List<BookBoard>) context.get("bookBoardList");
+    List<TranscriptionBoard> transcriptionBoardList =
+        (List<TranscriptionBoard>) context.get("transcriptionBoardList");
+    List<BookBasket> bookBasketList = (List<BookBasket>) context.get("bookBasketList");
+    List<Member> memberList = (List<Member>) context.get("memberList");
 
     Prompt prompt = new Prompt(keyboard);
     HashMap<String, Command> commandMap = new HashMap<>();
@@ -166,12 +157,6 @@ public class App {
     }
 
     keyboard.close();
-
-    saveMemberData();
-    saveBookBoardData();
-    saveBookBasketData();
-    saveTranscriptionData();
-
     notifyApplicationDestroyed();
 
   } // service()
@@ -193,113 +178,6 @@ public class App {
     }
   }
 
-
-  @SuppressWarnings("unchecked")
-  private void loadMemberData() {
-    File file = new File("./member.ser2");
-
-    try (ObjectInputStream in =
-        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      memberList = (List<Member>) in.readObject();
-      System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", memberList.size());
-
-    } catch (Exception e) {
-      System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
-    }
-  }
-
-  private void saveMemberData() {
-    File file = new File("./member.ser2");
-
-    try (ObjectOutputStream out =
-        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeObject(memberList);
-      System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", memberList.size());
-
-    } catch (IOException e) {
-      System.out.println("파일 쓰기 중 오류 발생! -" + e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  private void loadBookBoardData() {
-    File file = new File("./bookBoard.ser2");
-
-    try (ObjectInputStream in =
-        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      bookBoardList = (List<BookBoard>) in.readObject();
-
-      System.out.printf("총 %d 개의 도서 데이터를 로딩했습니다.\n", bookBoardList.size());
-
-    } catch (Exception e) {
-      System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
-    }
-  }
-
-  private void saveBookBoardData() {
-    File file = new File("./bookBoard.ser2");
-
-    try (ObjectOutputStream out =
-        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeObject(bookBoardList);
-
-      System.out.printf("총 %d 개의 도서 데이터를 저장했습니다.\n", bookBoardList.size());
-    } catch (IOException e) {
-      System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  private void loadBookBasketData() {
-    File file = new File("./bookBasket.ser2");
-
-    try (ObjectInputStream in =
-        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      bookBasketList = (List<BookBasket>) in.readObject();
-
-      System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 로딩했습니다.\n", bookBasketList.size());
-    } catch (Exception e) {
-      System.out.println("파일 읽기 중 오류 발생! -" + e.getMessage());
-    }
-  }
-
-  private void saveBookBasketData() {
-    File file = new File("./bookBasket.ser2");
-
-    try (ObjectOutputStream out =
-        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeObject(bookBasketList);
-      System.out.printf("총 %d 개의 즐겨찾는 도서의 데이터를 저장했습니다.\n", bookBasketList.size());
-    } catch (IOException e) {
-      System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  private void loadTranscriptionData() {
-    File file = new File("./transcription.ser2");
-
-    try (ObjectInputStream in =
-        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      transcriptionBoardList = (List<TranscriptionBoard>) in.readObject();
-
-      System.out.printf("총 %d 개의 필사게시판의 데이터를 로딩했습니다.\n", transcriptionBoardList.size());
-    } catch (Exception e) {
-      System.out.println("파일 읽기 중 오류 발생! -" + e.getMessage());
-    }
-  }
-
-  private void saveTranscriptionData() {
-    File file = new File("./transcription.ser2");
-    try (ObjectOutputStream out =
-        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeObject(transcriptionBoardList);
-
-      System.out.printf("총 %d 개의 필사게시판의 데이터를 저장했습니다.\n", transcriptionBoardList.size());
-    } catch (IOException e) {
-      System.out.println("파일 쓰기 중 오류 발생! -" + e.getMessage());
-    }
-  }
 
   public static void main(String[] args) {
     App app = new App();
